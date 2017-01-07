@@ -11,6 +11,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.transform.Transform;
 import javafx.stage.FileChooser;
@@ -36,14 +37,19 @@ public class MainView extends BorderPane{
     private SequenceView sequenceView;
 
     public Pane sequencePane;
-    public Pane viewPane;
+    public StackPane viewPane;
+    public Pane bottomPane;
+    public Pane topPane;
     public SubScene viewScene;
     public Property<Transform> woldTransformProperty;
 
     public MainView() {
 
-        viewPane = new Pane();
-        viewPane.setStyle("-fx-background-color: rgba(0, 0, 0, 0); -fx-background-radius: 10;");
+        bottomPane = new Pane();
+        topPane = new Pane();
+        topPane.setPickOnBounds(false);
+        viewPane = new StackPane(bottomPane, topPane);
+        viewPane.setStyle("-fx-background-color: rgba(0, 200, 200, 0); -fx-background-radius: 10;");
         viewScene  = new SubScene(viewPane, 800, 800, true, SceneAntialiasing.BALANCED);
         setCamera();
 
@@ -57,7 +63,7 @@ public class MainView extends BorderPane{
             sequenceView = new SequenceView(proteinGraph);
             pickPDBFile(proteinGraph);
             proteinGraph.assignBonds();
-            viewPane.getChildren().add(proteinView);
+            bottomPane.getChildren().add(proteinView);
             sequencePane.getChildren().add(sequenceView);
 
         });
@@ -85,7 +91,7 @@ public class MainView extends BorderPane{
 
         woldTransformProperty.addListener((observable, oldValue, newValue) -> {
             System.out.println("woldTransform Rotated");
-            viewPane.getTransforms().setAll(newValue);
+            bottomPane.getTransforms().setAll(newValue);
         });
 
     }

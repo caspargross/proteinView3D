@@ -25,11 +25,11 @@ public class AtomView extends Group{
         moveGroup();
         setSphereRadius();
         getChildren().add(sphere);
+        setupMouseHover();
     }
 
     private void setupSphereColour(){
         PhongMaterial pm=new PhongMaterial();
-
         // Set colours acccording to element:
         if (proteinNode.getElement().equals("C")) pm.setDiffuseColor(Color.ALICEBLUE);
         if (proteinNode.getElement().equals("O")) pm.setDiffuseColor(Color.RED);
@@ -48,6 +48,12 @@ public class AtomView extends Group{
         if (proteinNode.getElement().equals("C")) sphere.setRadius(radiusFactor*RADIUS_C);
         if (proteinNode.getElement().equals("O")) sphere.setRadius(radiusFactor*RADIUS_O);
         if (proteinNode.getElement().equals("N")) sphere.setRadius(radiusFactor*RADIUS_N);
+    }
+
+    private void setupMouseHover(){
+        setOnMouseEntered(me -> {
+
+        });
     }
 
 

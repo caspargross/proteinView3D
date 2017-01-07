@@ -15,8 +15,13 @@ public class BondView extends Group{
 
     public BondView(ProteinEdge proteinEdge) {
         this.proteinEdge = proteinEdge;
-        line = new MyLine3D(proteinEdge.getSourceNode().getX(), proteinEdge.getSourceNode().getY(), proteinEdge.getSourceNode().getZ(),
-                proteinEdge.getTargetNode().getX(), proteinEdge.getTargetNode().getY(), proteinEdge.getTargetNode().getZ(),
+        line = new MyLine3D(
+                proteinEdge.getSourceNode().getX(),
+                proteinEdge.getSourceNode().getY(),
+                proteinEdge.getSourceNode().getZ(),
+                proteinEdge.getTargetNode().getX(),
+                proteinEdge.getTargetNode().getY(),
+                proteinEdge.getTargetNode().getZ(),
                 Color.DARKBLUE.darker());
         getChildren().add(line);
 

@@ -12,7 +12,7 @@ import model.ProteinNode;
  */
 public class ProteinView extends Group {
 
-    Group atomViewGroup;
+    public Group atomViewGroup;
     Group bondViewGroup;
     ProteinGraph proteinGraph;
 
@@ -39,9 +39,7 @@ public class ProteinView extends Group {
         proteinGraph.edgeList.addListener((ListChangeListener<ProteinEdge>) c -> {
             while (c.next()) {
                 if (c.wasAdded()) {
-                    for (ProteinEdge proteinEdge:c.getAddedSubList()){
-                        addBondView(proteinEdge);
-                    }
+                    c.getAddedSubList().forEach(this::addBondView);
                 }
             }
         });

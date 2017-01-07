@@ -1,10 +1,12 @@
 package presenter;
 
 import javafx.geometry.Point3D;
+import javafx.scene.control.Label;
 import javafx.scene.input.MouseButton;
 import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Scale;
 import javafx.scene.transform.Translate;
+import view.AtomView;
 import view.MainView;
 import view.ProteinView;
 
@@ -20,15 +22,14 @@ public class Presenter{
 
 
     MainView view;
-    ProteinView proteinView;
-
 
     public Presenter (MainView mainView) {
 
         this.view = mainView;
-        proteinView = view.getProteinView();
         setupRotateAndMove();
         setupZoom();
+        setupMouseHover();
+        createAttachments();
     }
 
     public void setupRotateAndMove() {
@@ -68,8 +69,6 @@ public class Presenter{
             }
 
         });
-
-        createAttachments();
     }
 
     // Zoom in Protein Scene
@@ -83,6 +82,13 @@ public class Presenter{
             double scaleFactor = (se.getDeltaY() > 0) ? SCALE_DELTA : 1/ SCALE_DELTA;
             Scale scale = new Scale(scaleFactor, scaleFactor, scaleFactor);
             view.woldTransformProperty.setValue(scale.createConcatenation(view.woldTransformProperty.getValue()));
+        });
+    }
+
+    // Hovering Mouse over Atoms displays additional information
+    public void setupMouseHover(){
+        view.bottomPane.setOnMouseEntered(me -> {
+            System.out.println("HOVERING OVER SOMETHING");
         });
     }
 

@@ -19,10 +19,27 @@ public class ProteinGraph {
         System.out.println("New Protein Graph created");
     }
 
-    public void addAtom(int serial, String name, Character altLoc, String resName, Character chainID,
-                        int resSeq, double x, double y, double z, String element){
-        ProteinNode newNode = new ProteinNode(serial, name, altLoc, resName, chainID,
-        resSeq, x, y, z, element);
+    public void addAtom(
+            int serial,
+            String name,
+            Character altLoc,
+            String resName,
+            Character chainID,
+            int resSeq,
+            double x,
+            double y,
+            double z,
+            String element){
+
+        ProteinNode newNode = new ProteinNode(
+                serial,
+                name,
+                altLoc,
+                resName,
+                chainID,
+                resSeq,
+                x, y, z,
+                element);
 
         if (newNode.getName().equals("N")){
             nodeList.add(newNode);
@@ -49,6 +66,7 @@ public class ProteinGraph {
         for (int i = 0; i < nodeListFull.size()-1; i++) {
             System.out.println("Quering atom" +i);
             ProteinNode currentAtom = nodeListFull.get(i);
+
             if (currentAtom.getName().equals("N")) {
                 addBond(currentAtom, nextAtom("CA", i), "N-CA");
             }
@@ -95,7 +113,6 @@ public class ProteinGraph {
         }
         return nextNode;
     }
-
 
     public void addHetAtom(){
 
