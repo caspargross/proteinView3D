@@ -1,21 +1,30 @@
-package sample.startup;
+package startup;
 
 import javafx.application.Application;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import presenter.Presenter;
+import view.MainView;
+
 
 public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Pane root = new Pane();
-        primaryStage.setTitle("Protein3DViewer");
-        primaryStage.setScene(new Scene(root, 300, 275));
-        primaryStage.show();
-    }
 
+        // Create View
+        MainView root = new MainView();
+
+        // Create Presenter
+        Presenter presenter = new Presenter(root);
+
+        primaryStage.setTitle("Protein3DViewer");
+        primaryStage.setScene(new Scene(root, 1000, 800));
+        primaryStage.show();
+
+
+
+    }
 
     public static void main(String[] args) {
         launch(args);
