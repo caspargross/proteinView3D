@@ -2,7 +2,6 @@ package model;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import view.BondView;
 
 /**
  * Created by Caspar on 23.12.2016.
@@ -11,10 +10,9 @@ public class ProteinGraph {
 
     public ObservableList<ProteinNode> nodeList=FXCollections.observableArrayList();
     public ObservableList<ProteinNode> nodeListFull=FXCollections.observableArrayList();
+    public ObservableList<ProteinNode> selectedNodes=FXCollections.observableArrayList();
     public ObservableList<ProteinEdge> edgeList=FXCollections.observableArrayList();
 
-    int currentAminoAcid;
-    int previousAminoAcid;
 
     public ProteinGraph() {
 
@@ -57,10 +55,10 @@ public class ProteinGraph {
             if (currentAtom.getName().equals("CA")) {
                 addBond(currentAtom, nextAtom("C", i), "CA-C");
             }
-            /** Handle exception when no CB exists?
-             * if (currentAtom.getName().equals("CA")) {
+            // Handle exception when no CB exists?
+            if (currentAtom.getName().equals("CA")) {
                 addBond(currentAtom, nextAtom("CB", i), "CA-CB");
-            } **/
+            }
             if (currentAtom.getName().equals("C")) {
                 addBond(currentAtom, nextAtom("O", i), "C-O");
             }
@@ -104,6 +102,17 @@ public class ProteinGraph {
     }
 
     public void removeElements(){
+
         nodeList.removeAll();
+    }
+
+    public String getSequenceInfo(){
+
+        String sequenceInfo ="";
+        for (ProteinNode node:nodeList){
+            sequenceInfo += node.getInfo();
+            sequenceInfo += "\n";
+        }
+        return  sequenceInfo;
     }
 }

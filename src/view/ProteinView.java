@@ -96,4 +96,20 @@ public class ProteinView extends Group {
         }
     }
 
+    public void increaseBondRadius(){
+
+        for (int i = 0; i < bondViewGroup.getChildren().size(); i++) {
+            BondView bondView = (BondView) bondViewGroup.getChildren().get(i);
+            bondView.line.cylinder.setRadius(bondView.line.cylinder.getRadius()+bondView.RADIUS_FACTOR);
+        }
+    }
+
+    public void decreaseBondRadius(){
+
+        for (int i = 0; i < bondViewGroup.getChildren().size(); i++) {
+            BondView bondView = (BondView) bondViewGroup.getChildren().get(i);
+            bondView.line.cylinder.setRadius(Math.max(0.02,bondView.line.cylinder.getRadius()-bondView.RADIUS_FACTOR));
+        }
+    }
+
 }

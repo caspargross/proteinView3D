@@ -9,6 +9,7 @@ import javafx.scene.Group;
  */
 public class BondView extends Group{
 
+    final double RADIUS_FACTOR = 0.05;
     ProteinEdge proteinEdge;
     public MyLine3D line;
 
@@ -19,5 +20,9 @@ public class BondView extends Group{
                 Color.DARKBLUE.darker());
         getChildren().add(line);
 
+    }
+
+    public void setRadius(double radius){
+        line.cylinder.setRadius(radius);
     }
 }

@@ -87,16 +87,10 @@ public class Presenter{
     }
 
     // Button events in Main View
-    public void createAttachments(){
-        view.increaseAtomSize.setOnAction(e ->{
-            System.out.println("Size increase button pressed");
-            view.getProteinView().increaseAtomRadius();
-        });
-
-        view.decreaseAtomSize.setOnAction(e ->{
-            System.out.println("Size decrease button pressed");
-            view.getProteinView().decreaseAtomRadius();
-        });
-
+    private void createAttachments(){
+        view.increaseAtomSize.setOnAction(e -> view.getProteinView().increaseAtomRadius());
+        view.decreaseAtomSize.setOnAction(e -> view.getProteinView().decreaseAtomRadius());
+        view.increaseBondSize.setOnAction(e -> view.getProteinView().increaseBondRadius());
+        view.decreaseBondSize.setOnAction(e -> view.getProteinView().decreaseBondRadius());
     }
 }

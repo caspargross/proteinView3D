@@ -49,4 +49,12 @@ public class ProteinNode {
     public String getName() {
         return name;
     }
+
+    public String getResName(){
+        return resName;
+    }
+
+    public String getInfo(){
+        return (serial+" " +name+" "+chainID);
+    }
 }

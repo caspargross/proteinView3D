@@ -64,20 +64,6 @@ public class MyLine3D extends Group {
         System.out.println("Direction Vector: " + directionVector.toString());
         System.out.println("Rotation Vector: " + rotationAxis.toString());
 
-        /**
-         * Diagnostics
-
-        Sphere directionSphere = new  Sphere(30);
-        directionSphere.setMaterial(new PhongMaterial(Color.RED));
-        directionSphere.getTransforms().add(new Translate(directionVector.getX(), directionVector.getY(), directionVector.getZ()));
-        getChildren().add(directionSphere);
-
-        Sphere rotationSphere = new  Sphere(30);
-        rotationSphere.setMaterial(new PhongMaterial(Color.PINK));
-        rotationSphere.getTransforms().add(new Translate(rotationAxis.getX(), rotationAxis.getY(), rotationAxis.getZ()));
-        getChildren().add(rotationSphere);
-         */
-
         double angle = directionVector.angle(0, 1, 0);
         System.out.println("Angle: "+ angle);
         Rotate rotate = new Rotate(angle, rotationAxis);
@@ -104,12 +90,5 @@ public class MyLine3D extends Group {
         cylinder.setMaterial(pm);
 
     }
-
-
-
-
-
-
-
 
 }
