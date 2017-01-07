@@ -25,14 +25,33 @@ public class ProteinView extends Group {
 
         // Add changelistener for proteinGraph Nodes (Atoms)
         proteinGraph.nodeList.addListener((ListChangeListener<ProteinNode>) c -> {
-           while (c.next()) {
-               if (c.wasAdded()) {
+           while (c.next()){
+               if (c.wasAdded()){
                    for (ProteinNode proteinNode:c.getAddedSubList()){
                        System.out.println("Detected Change: Added atom");
                        addAtomView(proteinNode);
                    }
                }
            }
+        });
+
+        // Add listener for atom selection
+        proteinGraph.selectedNodes.addListener((ListChangeListener<ProteinNode>) c -> {
+            while (c.next()){
+                if (c.wasAdded()){
+                    for (ProteinNode proteinNode:c.getAddedSubList()){
+                        System.err.println("Node was selected");
+                        findAtomViewfor(proteinNode).sphere.setRadius(10);
+                    }
+                }
+
+                if (c.wasRemoved()){
+                    for (ProteinNode proteinNode:c.getRemoved()){
+                        System.err.println("Node was removed");
+                        findAtomViewfor(proteinNode).sphere.setRadius(1);
+                    }
+                }
+            }
         });
 
         // Add changeListener for proteinGraph Edge (Bonds)
@@ -108,6 +127,14 @@ public class ProteinView extends Group {
             BondView bondView = (BondView) bondViewGroup.getChildren().get(i);
             bondView.line.cylinder.setRadius(Math.max(0.02,bondView.line.cylinder.getRadius()-bondView.RADIUS_FACTOR));
         }
+    }
+
+    public AtomView findAtomViewfor(ProteinNode proteinNode){
+        for (int i = 0; i < atomViewGroup.getChildren().size(); i++) {
+            AtomView currentAtomView = (AtomView) atomViewGroup.getChildren().get(i);
+            if (currentAtomView.proteinNode == proteinNode) return currentAtomView;
+        }
+        return null;
     }
 
 }
