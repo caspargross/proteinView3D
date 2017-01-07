@@ -44,6 +44,7 @@ public class MainView extends BorderPane{
         openFile.setOnAction(e ->{
             proteinView = new ProteinView(proteinGraph);
             pickPDBFile(proteinGraph);
+            proteinGraph.assignBonds();
             viewPane.getChildren().add(proteinView);
         });
 

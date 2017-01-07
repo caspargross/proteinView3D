@@ -1,19 +1,23 @@
 package view;
 
+import javafx.scene.paint.Color;
+import model.ProteinEdge;
+import javafx.scene.Group;
+
 /**
  * Created by Caspar on 23.12.2016.
  */
-public class BondView {
+public class BondView extends Group{
 
-    // Connected Bonds:
-    // C <-> O1 (double)
-    // C <-> O2 (single)
-    // C <-> Calpha
-    // Calpha <-> Cbeta (if exists)
-    // Calpha <-> N
-    // N <-> O2 (carboxy bound)
-    // Special cases:
-    // Prolin
+    ProteinEdge proteinEdge;
+    public MyLine3D line;
 
+    public BondView(ProteinEdge proteinEdge) {
+        this.proteinEdge = proteinEdge;
+        line = new MyLine3D(proteinEdge.getSourceNode().getX(), proteinEdge.getSourceNode().getY(), proteinEdge.getSourceNode().getZ(),
+                proteinEdge.getTargetNode().getX(), proteinEdge.getTargetNode().getY(), proteinEdge.getTargetNode().getZ(),
+                Color.DARKBLUE.darker());
+        getChildren().add(line);
 
+    }
 }

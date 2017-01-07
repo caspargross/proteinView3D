@@ -2,10 +2,9 @@ package view;
 
 import javafx.collections.ListChangeListener;
 import javafx.scene.Group;
-import javafx.scene.Node;
+import model.ProteinEdge;
 import model.ProteinGraph;
 import model.ProteinNode;
-import presenter.Presenter;
 
 
 /**
@@ -24,7 +23,7 @@ public class ProteinView extends Group {
         this.atomViewGroup = new Group();
         this.bondViewGroup = new Group();
 
-        // Add changelistener for proteinGraph
+        // Add changelistener for proteinGraph Nodes (Atoms)
         proteinGraph.nodeList.addListener((ListChangeListener<ProteinNode>) c -> {
            while (c.next()) {
                if (c.wasAdded()) {
@@ -35,6 +34,18 @@ public class ProteinView extends Group {
                }
            }
         });
+
+        // Add changeListener for proteinGraph Edge (Bonds)
+        proteinGraph.edgeList.addListener((ListChangeListener<ProteinEdge>) c -> {
+            while (c.next()) {
+                if (c.wasAdded()) {
+                    for (ProteinEdge proteinEdge:c.getAddedSubList()){
+                        addBondView(proteinEdge);
+                    }
+                }
+            }
+        });
+
 
         /** // Add changelistener for atomViewGroup
         atomViewGroup.getChildren().addListener((ListChangeListener<Node>) c -> {
@@ -48,6 +59,7 @@ public class ProteinView extends Group {
             }
         });
          **/
+        getChildren().add(bondViewGroup);
         getChildren().add(atomViewGroup);
 
         System.out.println("Created new ProteinView");
@@ -60,6 +72,12 @@ public class ProteinView extends Group {
         atomViewGroup.getChildren().add(atomView);
         System.out.println("Atom View to AtomViewGroup" + atomViewGroup.getChildren().size());
 
+    }
+
+    public void addBondView (ProteinEdge proteinEdge){
+
+        BondView bondView = new BondView(proteinEdge);
+        bondViewGroup.getChildren().add(bondView);
     }
 
     public void increaseAtomRadius(){

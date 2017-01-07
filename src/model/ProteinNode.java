@@ -45,4 +45,8 @@ public class ProteinNode {
     public String getElement(){
         return element;
     }
+
+    public String getName() {
+        return name;
+    }
 }

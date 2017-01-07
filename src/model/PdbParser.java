@@ -43,11 +43,11 @@ public class PdbParser {
                 if (line.startsWith("ATOM")){
                     newProteinGraph.addAtom(
                             Integer.parseInt(line.substring(7,11).replaceAll(" ", "")),   // Atom serial number
-                            line.substring(13,16),  // Atom name
-                            line.substring(17).charAt(0),      // + altLoc
-                            line.substring(18,20),  // Residue name
+                            line.substring(13,15).replace(" ",""),  // Atom name
+                            line.substring(15).charAt(0),      // + altLoc
+                            line.substring(17,20).replaceAll(" ",""),  // Residue name
                             line.substring(22).charAt(0),     // Chain Identifier
-                            Integer.parseInt(line.substring(23,26).replaceAll(" ", "")),  // Residue sequence number
+                            Integer.parseInt(line.substring(22,26).replaceAll(" ", "")),  // Residue sequence number
                             Double.parseDouble(line.substring(31,38).replaceAll(" ", "")),  // xCoodinates
                             Double.parseDouble(line.substring(39,46).replaceAll(" ", "")),  // yCoordinates
                             Double.parseDouble(line.substring(47,54).replaceAll(" ", "")),  // zCoordinates
@@ -63,9 +63,7 @@ public class PdbParser {
 
                 line = bufferedReader.readLine();
 
-
             }
-
 
         } catch (IOException e) {
             System.err.println("Error in File Reading");
