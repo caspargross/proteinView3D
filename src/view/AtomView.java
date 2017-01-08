@@ -13,7 +13,7 @@ public class AtomView extends Group{
     final double RADIUS_O = 6;
     final double RADIUS_N = 6.5;
     final double RADIUS_C = 7;
-    final double radiusFactor = 0.1;
+    final double RADIUS_FACTOR = 0.1;
 
     ProteinNode proteinNode;
     Sphere sphere;
@@ -45,9 +45,9 @@ public class AtomView extends Group{
     }
 
     private  void setSphereRadius(){
-        if (proteinNode.getElement().equals("C")) sphere.setRadius(radiusFactor*RADIUS_C);
-        if (proteinNode.getElement().equals("O")) sphere.setRadius(radiusFactor*RADIUS_O);
-        if (proteinNode.getElement().equals("N")) sphere.setRadius(radiusFactor*RADIUS_N);
+        if (proteinNode.getElement().equals("C")) sphere.setRadius(RADIUS_FACTOR *RADIUS_C);
+        if (proteinNode.getElement().equals("O")) sphere.setRadius(RADIUS_FACTOR *RADIUS_O);
+        if (proteinNode.getElement().equals("N")) sphere.setRadius(RADIUS_FACTOR *RADIUS_N);
     }
 
     private void setupMouseHover(){

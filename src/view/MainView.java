@@ -7,7 +7,9 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.geometry.Insets;
 import javafx.scene.*;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -26,17 +28,19 @@ import java.io.File;
 public class MainView extends BorderPane{
 
     public Label leftLabel = new Label("Left Sidebar");
-    Button openFile = new Button("Open");
+    public Button openFile = new Button("Open");
     public Button increaseAtomSize = new Button("Atom ++");
     public Button decreaseAtomSize = new Button("Atom --");
     public Button increaseBondSize = new Button("Bond ++");
     public Button decreaseBondSize = new Button("Bond --");
+    public CheckBox showAtoms = new CheckBox("show Atoms");
+    public CheckBox showBonds = new CheckBox("show Bonds");
     Label rightLabel = new Label ("Righ Sidear");
     private ProteinGraph proteinGraph = new ProteinGraph();
-    private ProteinView proteinView;
-    private SequenceView sequenceView;
+    public ProteinView proteinView;
+    public SequenceView sequenceView;
 
-    public Pane sequencePane;
+    public ScrollPane sequencePane;
     public StackPane viewPane;
     public Pane bottomPane;
     public Pane topPane;
@@ -44,7 +48,7 @@ public class MainView extends BorderPane{
     public Property<Transform> woldTransformProperty;
 
     public MainView() {
-
+        // Create viewPane with ProteinView
         bottomPane = new Pane();
         topPane = new Pane();
         topPane.setPickOnBounds(false);
@@ -53,24 +57,19 @@ public class MainView extends BorderPane{
         viewScene  = new SubScene(viewPane, 800, 800, true, SceneAntialiasing.BALANCED);
         setCamera();
 
-        sequencePane = new Pane();
+        // Create sequencePane with protein sequence
+        sequencePane = new ScrollPane();
         sequencePane.setMinWidth(200);
         sequencePane.setPadding(new Insets(10));
         sequencePane.setStyle("-fx-background-color: grey; -fx-background-radius: 10;");
 
-        openFile.setOnAction(e ->{
-            proteinView = new ProteinView(proteinGraph);
-            sequenceView = new SequenceView(proteinGraph);
-            pickPDBFile(proteinGraph);
-            proteinGraph.assignBonds();
-            bottomPane.getChildren().add(proteinView);
-            sequencePane.getChildren().add(sequenceView);
-
-        });
-
-
-
-        setTop(new HBox(openFile, increaseAtomSize, decreaseAtomSize, increaseBondSize, decreaseBondSize));
+        // Assign Panes to the Layout
+        setTop(new HBox(
+                openFile,
+                increaseAtomSize, decreaseAtomSize,
+                increaseBondSize, decreaseBondSize,
+                showAtoms, showBonds
+        ));
         rightLabel.setText(proteinGraph.getSequenceInfo());
         setRight(sequencePane);
         setLeft(leftLabel);
@@ -96,13 +95,25 @@ public class MainView extends BorderPane{
 
     }
 
-    private void pickPDBFile(ProteinGraph proteinGraph){
+
+    public void createNewViewFromPDB() {
+        // Create empty view
+        proteinView = new ProteinView(proteinGraph);
+        sequenceView = new SequenceView(proteinGraph);
+
+        // Open File Picker
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open PDB file");
         File file = fileChooser.showOpenDialog(null);
         PdbParser pdbParser = new PdbParser(file, proteinGraph);
+
+        // Add ProteinView and SequenceView to mainView
         proteinGraph = pdbParser.getProteinGraph();
+        proteinGraph.assignBonds();
+        bottomPane.getChildren().add(proteinView);
+        sequencePane.setContent(sequenceView);
     }
+
 
     private void setCamera(){
         // Set Camera and Scene Settings

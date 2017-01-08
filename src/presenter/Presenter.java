@@ -1,14 +1,13 @@
 package presenter;
 
 import javafx.geometry.Point3D;
-import javafx.scene.control.Label;
 import javafx.scene.input.MouseButton;
 import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Scale;
 import javafx.scene.transform.Translate;
-import view.AtomView;
 import view.MainView;
 import view.ProteinView;
+import view.SequenceView;
 
 /**
  * Created by Caspar on 23.12.2016.
@@ -29,7 +28,7 @@ public class Presenter{
         setupRotateAndMove();
         setupZoom();
         setupMouseHover();
-        createAttachments();
+        createButtonEvents();
     }
 
     public void setupRotateAndMove() {
@@ -93,7 +92,13 @@ public class Presenter{
     }
 
     // Button events in Main View
-    private void createAttachments(){
+    private void createButtonEvents(){
+        // Open File
+        view.openFile.setOnAction(e ->{
+            view.createNewViewFromPDB();
+        });
+
+        // Increase and Decrease Bond and Atom radius
         view.increaseAtomSize.setOnAction(e -> view.getProteinView().increaseAtomRadius());
         view.decreaseAtomSize.setOnAction(e -> view.getProteinView().decreaseAtomRadius());
         view.increaseBondSize.setOnAction(e -> view.getProteinView().increaseBondRadius());

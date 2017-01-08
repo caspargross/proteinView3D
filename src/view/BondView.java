@@ -13,6 +13,7 @@ public class BondView extends Group{
     ProteinEdge proteinEdge;
     public MyLine3D line;
 
+
     public BondView(ProteinEdge proteinEdge) {
         this.proteinEdge = proteinEdge;
         line = new MyLine3D(
@@ -22,12 +23,8 @@ public class BondView extends Group{
                 proteinEdge.getTargetNode().getX(),
                 proteinEdge.getTargetNode().getY(),
                 proteinEdge.getTargetNode().getZ(),
-                Color.DARKBLUE.darker());
+                Color.LIGHTBLUE);
         getChildren().add(line);
 
-    }
-
-    public void setRadius(double radius){
-        line.cylinder.setRadius(radius);
     }
 }
