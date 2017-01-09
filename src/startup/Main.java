@@ -19,7 +19,7 @@ public class Main extends Application {
         Presenter presenter = new Presenter(root);
 
         primaryStage.setTitle("Protein3DViewer");
-        primaryStage.setScene(new Scene(root, 1000, 800));
+        primaryStage.setScene(new Scene(root, 1200, 800));
         primaryStage.show();
 
 

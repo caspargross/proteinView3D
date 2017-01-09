@@ -17,6 +17,11 @@ public class ProteinView extends Group {
     Group bondConnectionViewGroup;
     ProteinGraph proteinGraph;
 
+    double minX = Double.MAX_VALUE;
+    double maxX = 0;
+    double minY = Double.MAX_VALUE;
+    double maxY = 0;
+
 
     public ProteinView(ProteinGraph proteinGraph){
 
@@ -78,6 +83,10 @@ public class ProteinView extends Group {
 
         AtomView atomView = new AtomView(proteinNode);
         atomViewGroup.getChildren().add(atomView);
+        if (atomView.getTranslateX() < minX) minX = atomView.getTranslateX();
+        if (atomView.getTranslateX() > maxX) maxX = atomView.getTranslateX();
+        if (atomView.getTranslateY() < minY) minY = atomView.getTranslateY();
+        if (atomView.getTranslateY() > maxY) maxY = atomView.getTranslateY();
         System.out.println("Atom View to AtomViewGroup" + atomViewGroup.getChildren().size());
 
     }
@@ -141,6 +150,14 @@ public class ProteinView extends Group {
             if (currentAtomView.proteinNode == proteinNode) return currentAtomView;
         }
         return null;
+    }
+
+    public double getMidX(){
+        return (maxX+minX)/2;
+    }
+
+    public double getMidY(){
+        return (maxY+minY)/2;
     }
 
 }

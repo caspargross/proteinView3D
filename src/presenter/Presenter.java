@@ -103,5 +103,11 @@ public class Presenter{
         view.decreaseAtomSize.setOnAction(e -> view.getProteinView().decreaseAtomRadius());
         view.increaseBondSize.setOnAction(e -> view.getProteinView().increaseBondRadius());
         view.decreaseBondSize.setOnAction(e -> view.getProteinView().decreaseBondRadius());
+
+        // Show bonds and atoms
+        view.showAtoms.selectedProperty().set(true);
+        view.showBonds.selectedProperty().set(true);
+        //view.showAtoms.setOnAction(e -> view.getProteinView().showAtoms(view.showAtoms.selectedProperty().get()));
+        //view.showBonds.setOnAction(e -> view.getProteinView().showBonds(view.showBonds.selectedProperty().get()));
     }
 }

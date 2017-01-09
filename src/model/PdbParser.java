@@ -39,6 +39,38 @@ public class PdbParser {
             String line = bufferedReader.readLine();
             String startString="4";
             while (line != null){
+                if (line.startsWith("HEADER")){
+                    newProteinGraph.addHeader(line.substring(10,50).replaceAll(" ", "") + " " +
+                            line.substring(50,59).replaceAll(" ", "") + " " +
+                            line.substring(62,66).replaceAll(" ",""));
+                }
+
+                if (line.startsWith("HELIX")){
+                    newProteinGraph.addSecondaryStructureHelix(
+                            "HELIX",
+                            Integer.parseInt(line.substring(7,10).replaceAll(" ","")),
+                            line.substring(15,18).replaceAll(" ", ""),
+                            line.substring(19).charAt(0),
+                            Integer.parseInt(line.substring(21,25).replaceAll(" ","")),
+                            line.substring(27,30).replaceAll(" ",""),
+                            line.substring(31).charAt(0),
+                            Integer.parseInt(line.substring(33,37).replaceAll(" ","")),
+                            Integer.parseInt(line.substring(71,76).replaceAll(" ","")));
+                }
+
+                if (line.startsWith("SHEET")){
+                    newProteinGraph.addSecondaryStructureSheet(
+                            "SHEET",
+                            Integer.parseInt(line.substring(7,10).replaceAll(" ","")),
+                            line.substring(17,20).replaceAll(" ", ""),
+                            line.substring(21).charAt(0),
+                            Integer.parseInt(line.substring(22,26).replaceAll(" ","")),
+                            line.substring(28,31).replaceAll(" ",""),
+                            line.substring(32).charAt(0),
+                            Integer.parseInt(line.substring(33,37).replaceAll(" ","")),
+                            line.substring(11,14).replaceAll(" ", ""),
+                            Integer.parseInt(line.substring(38,40).replaceAll(" ","")));
+                }
 
                 if (line.startsWith("ATOM")){
                     newProteinGraph.addAtom(

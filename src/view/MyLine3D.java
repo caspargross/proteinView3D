@@ -55,7 +55,6 @@ public class MyLine3D extends Group {
         scaleCylinder(cylinder);
         setupCylinder(cylinder);
         getChildren().add(cylinder);
-
     }
 
     private void rotateCylinder(Cylinder cylinder){
@@ -68,14 +67,12 @@ public class MyLine3D extends Group {
         System.out.println("Angle: "+ angle);
         Rotate rotate = new Rotate(angle, rotationAxis);
         cylinder.getTransforms().add(rotate);
-
     }
 
     private void moveCylinder(Cylinder cylinder){
         Point3D midpoint = startpoint.midpoint(endpoint);
         Translate translate = new Translate(midpoint.getX(), midpoint.getY(), midpoint.getZ());
         cylinder.getTransforms().add(translate);
-
     }
 
     private void scaleCylinder(Cylinder cylinder){
@@ -88,7 +85,6 @@ public class MyLine3D extends Group {
         pm.setDiffuseColor(color);
         pm.setSpecularColor(Color.WHITE);
         cylinder.setMaterial(pm);
-
     }
 
 }
