@@ -38,12 +38,14 @@ public class SequenceView extends VBox {
         ProteinNode proteinNode;
         Text name = new Text();
         Text aminoAcid = new Text();
+        Text secondaryStructure = new Text();
         boolean isSelected = false;
 
         public SequenceRow(ProteinNode proteinNode) {
             this.proteinNode = proteinNode;
             this.name.setText(proteinNode.getName());
             this.aminoAcid.setText(proteinNode.getResName());
+            this.secondaryStructure.setText(proteinNode.getSecondaryStructure());
             setOnMouseClicked(me ->{
                 if (!isSelected) {
                     setStyle("-fx-background-color: red;");
@@ -56,7 +58,7 @@ public class SequenceView extends VBox {
                 }
 
             });
-            getChildren().addAll(name, aminoAcid);
+            getChildren().addAll(name, aminoAcid, secondaryStructure);
         }
     }
 
