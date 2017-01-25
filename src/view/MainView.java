@@ -13,10 +13,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.*;
 import javafx.scene.transform.Transform;
 import javafx.stage.FileChooser;
 import model.PdbParser;
@@ -31,6 +28,9 @@ import java.io.File;
 
 public class MainView extends BorderPane{
 
+    // Model (ProteinGraph)
+    public ProteinGraph model;
+
     // UI Elements
     public Label leftLabel = new Label("Left Sidebar");
     public Label headerLabel = new Label("");
@@ -41,9 +41,15 @@ public class MainView extends BorderPane{
     public Button decreaseBondSize = new Button("Bond --");
     public CheckBox showAtoms = new CheckBox("show Atoms");
     public CheckBox showBonds = new CheckBox("show Bonds");
+    public CheckBox showBackbone = new CheckBox("Backbone");
+    public CheckBox showResidues = new CheckBox("CA and CB");
+    public CheckBox showSidechains = new CheckBox("Complete Res.");
+    public CheckBox showTriangles = new CheckBox("Triangles");
+    public CheckBox showSecondaryStructure = new CheckBox("sec. Structure");
 
-    // Model
-    private ProteinGraph proteinGraph = new ProteinGraph();
+    public VBox viewElements = new VBox(leftLabel, showAtoms, showBonds, showBackbone, showResidues,
+            showSidechains, showTriangles, showSecondaryStructure);
+
 
     // Content views and Scene
     public SubScene viewScene;
@@ -59,13 +65,15 @@ public class MainView extends BorderPane{
     // Transformation Property
     public Property<Transform> woldTransformProperty;
 
-    public MainView() {
+    public MainView(ProteinGraph proteinGraph) {
+        this.model = proteinGraph;
+
         // Create viewPane with ProteinView
         bottomPane = new Pane();
         topPane = new Pane(headerLabel);
         topPane.setPickOnBounds(false);
         viewPane = new StackPane(bottomPane, topPane);
-        viewPane.setStyle("-fx-background-color: rgba(0, 200, 200, 0); -fx-background-radius: 10;");
+        viewPane.setStyle("-fx-background-color: rgba(0, 200, 200, 1); -fx-background-radius: 10;");
         viewScene  = new SubScene(viewPane, 800, 800, true, SceneAntialiasing.BALANCED);
         viewScene.minWidth(400);
         viewScene.minHeight(400);
@@ -83,11 +91,10 @@ public class MainView extends BorderPane{
         setTop(new HBox(
                 openFile,
                 increaseAtomSize, decreaseAtomSize,
-                increaseBondSize, decreaseBondSize,
-                showAtoms, showBonds
+                increaseBondSize, decreaseBondSize
         ));
         setRight(sequencePane);
-        setLeft(leftLabel);
+        setLeft(viewElements);
         setCenter(viewScene);
 
         // Add WorldTransform
@@ -108,30 +115,16 @@ public class MainView extends BorderPane{
             bottomPane.getTransforms().setAll(newValue);
         });
 
-    }
 
-    public void createNewViewFromPDB() {
         // Create empty view
-        proteinView = new ProteinView(proteinGraph);
-        sequenceView = new SequenceView(proteinGraph);
-
-        // Open File Picker
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Open PDB file");
-        File file = fileChooser.showOpenDialog(null);
-        PdbParser pdbParser = new PdbParser(file, proteinGraph);
-
-        // Add ProteinView and SequenceView to mainView
-        proteinGraph = pdbParser.getProteinGraph();
-        proteinGraph.assignBonds();
-
-        setInitialTransform(proteinView);
+        proteinView = new ProteinView(model);
+        sequenceView = new SequenceView(proteinView);
         bottomPane.getChildren().add(proteinView);
         sequencePane.setContent(sequenceView);
-        headerLabel.setText(proteinGraph.getHeader());
     }
 
-    public void setInitialTransform(ProteinView proteinView){
+
+    public void setInitialTransform(){
         viewPane.setTranslateX(-viewScene.getWidth()/2);
         viewPane.setTranslateY(-viewScene.getHeight()/2);
         bottomPane.setTranslateX(-proteinView.getMidX()+viewScene.getWidth()/2);

@@ -8,11 +8,17 @@ import javafx.collections.ObservableList;
  */
 public class ProteinGraph {
 
-    public ObservableList<ProteinNode> nodeList=FXCollections.observableArrayList();
-    public ObservableList<ProteinNode> nodeListFull=FXCollections.observableArrayList();
-    public ObservableList<ProteinNode> selectedNodes=FXCollections.observableArrayList();
+    // Lists observed by the View
+    public ObservableList<ProteinNode> nodeList =FXCollections.observableArrayList();
+    public ObservableList<ProteinNode> nodeListSelected =FXCollections.observableArrayList();
     public ObservableList<ProteinEdge> edgeList=FXCollections.observableArrayList();
     public ObservableList<SecondaryStructure> secondaryStructureList=FXCollections.observableArrayList();
+
+    // Lists containing all nodes and edges
+    public ObservableList<ProteinNode> nodeListResidue =FXCollections.observableArrayList();
+    public ObservableList<ProteinNode> nodeListSidechain =FXCollections.observableArrayList();
+    public ObservableList<ProteinNode> nodeListBackbone =FXCollections.observableArrayList();
+    public ObservableList<ProteinNode> nodeListFull=FXCollections.observableArrayList();
 
     String header;
 
@@ -45,20 +51,21 @@ public class ProteinGraph {
                 element);
 
         if (newNode.getName().equals("N")){
-            nodeList.add(newNode);
+            nodeListBackbone.add(newNode);
         }
         if (newNode.getName().equals("O")){
-            nodeList.add(newNode);
-        }
-        if (newNode.getName().equals("CA")){
-            nodeList.add(newNode);
-        }
-        if (newNode.getName().equals("CB")){
-            nodeList.add(newNode);
+            nodeListBackbone.add(newNode);
         }
         if (newNode.getName().equals("C")){
-            nodeList.add(newNode);
+            nodeListBackbone.add(newNode);
         }
+        if (newNode.getName().equals("CA")){
+            nodeListResidue.add(newNode);
+        }
+        if (newNode.getName().equals("CB")){
+            nodeListResidue.add(newNode);
+        }
+
 
         System.out.println(newNode.getName());
         assignStructureToAtom(newNode);
@@ -207,7 +214,7 @@ public class ProteinGraph {
     public String getSequenceInfo(){
 
         String sequenceInfo ="";
-        for (ProteinNode node:nodeList){
+        for (ProteinNode node: nodeList){
             sequenceInfo += node.getInfo();
             sequenceInfo += "\n";
         }
@@ -216,5 +223,19 @@ public class ProteinGraph {
 
     public String getHeader(){
         return header;
+    }
+
+    public void showAtoms(boolean selectionValue) {
+        if (selectionValue) {
+            for (ProteinNode proteinNode: nodeListFull ) {
+                nodeList.add(proteinNode);
+            }
+        } else {
+            nodeList.removeAll();
+        }
+    }
+
+    public void hideAtoms() {
+
     }
 }

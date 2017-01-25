@@ -1,9 +1,12 @@
 package view;
+import javafx.beans.binding.DoubleBinding;
 import javafx.beans.binding.ObjectBinding;
 import javafx.beans.property.Property;
 import javafx.collections.ListChangeListener;
 import javafx.geometry.Bounds;
+import javafx.geometry.NodeOrientation;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 import model.ProteinGraph;
@@ -13,24 +16,14 @@ import model.ProteinNode;
  * Created by Caspar on 07.01.2017.
  */
 public class BoundingBoxes2D extends Group{
-    /**
-    ProteinGraph proteinGraph;
-    {
 
-        this.proteinGraph = proteinGraph;
+    Property[] properties;
+    Group rectangleGroup = new Group();
 
-        proteinGraph.selectedNodes.addListener((ListChangeListener<ProteinNode>) c -> {
-            while (c.next()) {
-                if (c.wasAdded()) {
-                    for (int i = 0; i < c.getAddedSize(); i++) {
+    public BoundingBoxes2D(ProteinView proteinView, MainView view) {
 
+        proteinView.atomViewGroup.getChildren().addListener((ListChangeListener<Node>) c->{
 
-                    }
-                }
-            }
-        });
-
-        proteinGraph.selectedNodes.addListener((ListChangeListener<ProteinNode>) c -> {
             while (c.next()){
                 if (c.wasAdded()) {
                     for (int i = 0; i < c.getAddedSize(); i++) {
@@ -68,9 +61,9 @@ public class BoundingBoxes2D extends Group{
                 }
             }
         });
-
     }
-    public BoundingBoxes2D(ProteinGraph proteinGraph)
+
+
 
     public ObjectBinding<Rectangle> createBoundingBoxBinding(Pane pane, Node node, Property[] properties) {
 
@@ -90,11 +83,12 @@ public class BoundingBoxes2D extends Group{
 
 
 
-    public void addBox(MyNodeView3D nodeView){
+    /**public void addBox(ProteinView nodeView){
         System.out.println("Box added");
         Rectangle rect = new Rectangle(nodeView.getTranslateX()-1, nodeView.getTranslateY()-1, nodeView.getScaleX()+2, nodeView.getScaleY()+2);
         rectangleGroup.getChildren().add(rect);
 
     }
-    **/
+     **/
+
 }

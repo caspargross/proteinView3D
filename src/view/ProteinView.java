@@ -12,7 +12,7 @@ import model.ProteinNode;
  */
 public class ProteinView extends Group {
 
-    Group atomViewGroup;
+    public Group atomViewGroup;
     Group bondViewGroup;
     Group bondConnectionViewGroup;
     ProteinGraph proteinGraph;
@@ -36,15 +36,15 @@ public class ProteinView extends Group {
                if (c.wasAdded()){
                    for (ProteinNode proteinNode:c.getAddedSubList()){
                        System.out.println("Detected Change: Added atom");
-                       addAtomView(proteinNode);
-                       addBondConnectionView(proteinNode);
+                       createAtomView(proteinNode);
+                       createBondConnectionView(proteinNode);
                    }
                }
            }
         });
 
         // Add listener for atom selection
-        proteinGraph.selectedNodes.addListener((ListChangeListener<ProteinNode>) c -> {
+        proteinGraph.nodeListSelected.addListener((ListChangeListener<ProteinNode>) c -> {
             while (c.next()){
                 if (c.wasAdded()){
                     for (ProteinNode proteinNode:c.getAddedSubList()){
@@ -66,7 +66,7 @@ public class ProteinView extends Group {
         proteinGraph.edgeList.addListener((ListChangeListener<ProteinEdge>) c -> {
             while (c.next()) {
                 if (c.wasAdded()) {
-                    c.getAddedSubList().forEach(this::addBondView);
+                    c.getAddedSubList().forEach(this::createBondView);
                 }
             }
         });
@@ -79,7 +79,7 @@ public class ProteinView extends Group {
 
     }
 
-    private void addAtomView(ProteinNode proteinNode){
+    private void createAtomView(ProteinNode proteinNode){
 
         AtomView atomView = new AtomView(proteinNode);
         atomViewGroup.getChildren().add(atomView);
@@ -91,14 +91,14 @@ public class ProteinView extends Group {
 
     }
 
-    private void addBondConnectionView(ProteinNode proteinNode){
+    private void createBondConnectionView(ProteinNode proteinNode){
 
         BondConnectionView bondConnectionView = new BondConnectionView(proteinNode);
         bondConnectionViewGroup.getChildren().add(bondConnectionView);
 
     }
 
-    public void addBondView (ProteinEdge proteinEdge){
+    public void createBondView(ProteinEdge proteinEdge){
 
         BondView bondView = new BondView(proteinEdge);
         bondViewGroup.getChildren().add(bondView);

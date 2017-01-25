@@ -5,9 +5,12 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Scale;
 import javafx.scene.transform.Translate;
+import javafx.stage.FileChooser;
+import model.PdbParser;
+import model.ProteinGraph;
 import view.MainView;
-import view.ProteinView;
-import view.SequenceView;
+
+import java.io.File;
 
 /**
  * Created by Caspar on 23.12.2016.
@@ -21,10 +24,13 @@ public class Presenter{
 
 
     MainView view;
+    ProteinGraph model;
 
-    public Presenter (MainView mainView) {
+    public Presenter (MainView mainView, ProteinGraph proteinGraph) {
 
         this.view = mainView;
+        this.model = proteinGraph;
+
         setupRotateAndMove();
         setupZoom();
         setupMouseHover();
@@ -91,11 +97,14 @@ public class Presenter{
         });
     }
 
+
+
+
     // Button events in Main View
     private void createButtonEvents(){
         // Open File
         view.openFile.setOnAction(e ->{
-            view.createNewViewFromPDB();
+            readPDB();
         });
 
         // Increase and Decrease Bond and Atom radius
@@ -104,10 +113,43 @@ public class Presenter{
         view.increaseBondSize.setOnAction(e -> view.getProteinView().increaseBondRadius());
         view.decreaseBondSize.setOnAction(e -> view.getProteinView().decreaseBondRadius());
 
-        // Show bonds and atoms
+        // Setup Button bindings
+        view.showAtoms.selectedProperty().addListener((observable, oldValue, newValue) -> {
+            model.showAtoms(newValue);
+        });
+
+
+        // Set initial view selections
         view.showAtoms.selectedProperty().set(true);
         view.showBonds.selectedProperty().set(true);
+        view.showBackbone.selectedProperty().setValue(true);
+        view.showResidues.selectedProperty().setValue(true);
+
+
+
+
         //view.showAtoms.setOnAction(e -> view.getProteinView().showAtoms(view.showAtoms.selectedProperty().get()));
         //view.showBonds.setOnAction(e -> view.getProteinView().showBonds(view.showBonds.selectedProperty().get()));
+
+
     }
+
+    public void readPDB() {
+
+        // Open File Picker
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Open PDB file");
+        File file = fileChooser.showOpenDialog(null);
+        PdbParser pdbParser = new PdbParser(file, model);
+
+        // Add ProteinView and SequenceView to mainView
+        model = pdbParser.getProteinGraph();
+        model.assignBonds();
+
+        //view.setInitialTransform();
+        view.headerLabel.setText(model.getHeader());
+        System.out.println("Finished PDB Parser action");
+
+    }
+
 }
