@@ -124,6 +124,7 @@ public class MainView extends BorderPane{
         // Add ProteinView and SequenceView to mainView
         proteinGraph = pdbParser.getProteinGraph();
         proteinGraph.assignBonds();
+
         setInitialTransform(proteinView);
         bottomPane.getChildren().add(proteinView);
         sequencePane.setContent(sequenceView);

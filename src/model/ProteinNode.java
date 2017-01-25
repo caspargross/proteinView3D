@@ -30,20 +30,31 @@ public class ProteinNode {
         this.y = y;
         this.z = z;
         this.element = element;
-        this.secondaryStructure = new SecondaryStructure("", 0, "", '0', 0, "", '0', 0, 0);
-        this.secondaryStructureLocation = "";
+        //this.secondaryStructure = new SecondaryStructure("", 0, "", '0', 0, "", '0', 0, 0);
+        //this.secondaryStructureLocation = "";
     }
 
     public void setSecondaryStructure (SecondaryStructure sS, String location){
-        secondaryStructure = sS;
-        secondaryStructureLocation = location;
+        this.secondaryStructure = sS;
+        this.secondaryStructureLocation = location;
+        if (sS != null){
+            System.err.println(" Set sS OF Type " + sS.getStructureDescription() + " on Res" + getResSeq());
+        }
     }
 
     public String getSecondaryStructure (){
-        if (secondaryStructure.type != ""){
+        // TODO Avoid != null statement if possible
+        /**if (secondaryStructure != null){
+            System.err.println("Sec Structure returned with type "+ secondaryStructure.type);
             return secondaryStructure.type + " " + secondaryStructureLocation;
 
         } else return "none";
+         **/
+        System.err.println("TRYING TO READ SS FROM" + getResSeq());
+        try {
+            return secondaryStructure.getStructureDescription();
+        } catch (NullPointerException e){return "NPE";}
+
     }
 
     public double getX() {

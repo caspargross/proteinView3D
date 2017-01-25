@@ -75,8 +75,7 @@ public class ProteinGraph {
             char endChainID,        // Chain identifier end
             int endSeqNum,          // Sequence number of the terminal residue
             int length){
-        SecondaryStructure newSecondaryStructure = new SecondaryStructure(
-                type,
+        SecondaryStructure newHelix = new Helix(
                 serNum,
                 initResName,
                 initChainID,
@@ -86,12 +85,14 @@ public class ProteinGraph {
                 endSeqNum,
                 length);
 
-        secondaryStructureList.add(newSecondaryStructure);
+        secondaryStructureList.add(newHelix);
+        System.err.println("Secondary Structure: Helix");
 
     }
+
     public void addSecondaryStructureSheet(
             String type,
-            int serNum,             // Serial number of the helix
+            int strand,             // Serial number of the helix
             String initResName,     // Name of the initial residue
             char initChainID,       // Chain identifier start
             int initSeqNum,         // Sequence number of the inital resiude
@@ -100,9 +101,8 @@ public class ProteinGraph {
             int endSeqNum,          // Sequence number of the terminal residue
             String sheetID,
             int sense){
-        SecondaryStructure newSecondaryStructure = new SecondaryStructure(
-                type,
-                serNum,
+        SecondaryStructure newSheet = new Sheet(
+                strand,
                 initResName,
                 initChainID,
                 initSeqNum,
@@ -112,7 +112,8 @@ public class ProteinGraph {
                 sheetID,
                 sense
                 );
-        secondaryStructureList.add(newSecondaryStructure);
+        secondaryStructureList.add(newSheet);
+        System.err.println("Secondary Structure: Sheet");
 
     }
 
@@ -120,6 +121,7 @@ public class ProteinGraph {
         this.header = header;
 
     }
+
     public void assignBonds(){
 
         for (int i = 0; i < nodeListFull.size()-1; i++) {
@@ -154,6 +156,7 @@ public class ProteinGraph {
         }
     }
 
+    // Check for every atom if the resSeq is inside a secondary Structure
     public void assignStructureToAtom(ProteinNode proteinNode){
 
         for (int i = 0; i < secondaryStructureList.size(); i++) {
