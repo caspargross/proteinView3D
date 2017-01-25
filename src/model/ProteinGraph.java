@@ -10,15 +10,20 @@ public class ProteinGraph {
 
     // Lists observed by the View
     public ObservableList<ProteinNode> nodeList =FXCollections.observableArrayList();
-    public ObservableList<ProteinNode> nodeListSelected =FXCollections.observableArrayList();
     public ObservableList<ProteinEdge> edgeList=FXCollections.observableArrayList();
+    public ObservableList<ProteinNode> nodeListSelected =FXCollections.observableArrayList();
     public ObservableList<SecondaryStructure> secondaryStructureList=FXCollections.observableArrayList();
 
     // Lists containing all nodes and edges
+    public ObservableList<ProteinNode> nodeListBackbone =FXCollections.observableArrayList();
     public ObservableList<ProteinNode> nodeListResidue =FXCollections.observableArrayList();
     public ObservableList<ProteinNode> nodeListSidechain =FXCollections.observableArrayList();
-    public ObservableList<ProteinNode> nodeListBackbone =FXCollections.observableArrayList();
     public ObservableList<ProteinNode> nodeListFull=FXCollections.observableArrayList();
+
+    public ObservableList<ProteinEdge> edgeListBackbone=FXCollections.observableArrayList();
+    public ObservableList<ProteinEdge> edgeListResidue=FXCollections.observableArrayList();
+    public ObservableList<ProteinEdge> edgeListSidechain=FXCollections.observableArrayList();
+    public ObservableList<ProteinEdge> edgeListFull=FXCollections.observableArrayList();
 
     String header;
 
@@ -158,7 +163,7 @@ public class ProteinGraph {
         // Check if end of protein is reached
         if (sourceAtom != targetAtom) {
             ProteinEdge newBond = new ProteinEdge(sourceAtom, targetAtom, bondDescription);
-            edgeList.add(newBond);
+            edgeListFull.add(newBond);
             System.out.println("Bond added");
         }
     }
@@ -227,15 +232,27 @@ public class ProteinGraph {
 
     public void showAtoms(boolean selectionValue) {
         if (selectionValue) {
-            for (ProteinNode proteinNode: nodeListFull ) {
+            for (ProteinNode proteinNode:nodeListBackbone ) {
+                nodeList.add(proteinNode);
+            }
+            for (ProteinNode proteinNode:nodeListResidue ) {
                 nodeList.add(proteinNode);
             }
         } else {
-            nodeList.removeAll();
+            nodeList.remove(0, nodeList.size());
         }
     }
 
-    public void hideAtoms() {
+    public void showBonds(boolean selectionValue) {
+        if (selectionValue) {
+            for (ProteinEdge proteinEdge:edgeListFull){
+                edgeList.add(proteinEdge);
+            }
+
+        } else {
+            edgeList.remove(0, edgeList.size());
+        }
+
 
     }
 }

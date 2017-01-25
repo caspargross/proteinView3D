@@ -35,9 +35,14 @@ public class ProteinView extends Group {
            while (c.next()){
                if (c.wasAdded()){
                    for (ProteinNode proteinNode:c.getAddedSubList()){
-                       System.out.println("Detected Change: Added atom");
+                       //System.out.println("Detected Change: Added atom");
                        createAtomView(proteinNode);
-                       createBondConnectionView(proteinNode);
+                       //createBondConnectionView(proteinNode);
+                   }
+               }
+               if (c.wasRemoved()){
+                   for (ProteinNode proteinNode:c.getRemoved()){
+                       atomViewGroup.getChildren().remove(findAtomViewFor(proteinNode));
                    }
                }
            }
@@ -67,6 +72,12 @@ public class ProteinView extends Group {
             while (c.next()) {
                 if (c.wasAdded()) {
                     c.getAddedSubList().forEach(this::createBondView);
+                }
+                if (c.wasRemoved()){
+                    for (ProteinEdge proteinEdge:c.getRemoved()){
+                        bondViewGroup.getChildren().remove(0, bondViewGroup.getChildren().size());
+                        bondConnectionViewGroup.getChildren().remove(0, bondConnectionViewGroup.getChildren().size());
+                    }
                 }
             }
         });
@@ -102,6 +113,8 @@ public class ProteinView extends Group {
 
         BondView bondView = new BondView(proteinEdge);
         bondViewGroup.getChildren().add(bondView);
+        createBondConnectionView(proteinEdge.getSourceNode());
+        createBondConnectionView(proteinEdge.getTargetNode());
     }
 
     public void increaseAtomRadius(){

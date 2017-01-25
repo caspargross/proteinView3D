@@ -44,16 +44,10 @@ public class ProteinNode {
 
     public String getSecondaryStructure (){
         // TODO Avoid != null statement if possible
-        /**if (secondaryStructure != null){
-            System.err.println("Sec Structure returned with type "+ secondaryStructure.type);
-            return secondaryStructure.type + " " + secondaryStructureLocation;
-
-        } else return "none";
-         **/
         System.err.println("TRYING TO READ SS FROM" + getResSeq());
         try {
             return secondaryStructure.getStructureDescription();
-        } catch (NullPointerException e){return "NPE";}
+        } catch (NullPointerException e){return "";}
 
     }
 

@@ -118,6 +118,10 @@ public class Presenter{
             model.showAtoms(newValue);
         });
 
+        view.showBonds.selectedProperty().addListener(((observable, oldValue, newValue) -> {
+            model.showBonds(newValue);
+        }));
+
 
         // Set initial view selections
         view.showAtoms.selectedProperty().set(true);
