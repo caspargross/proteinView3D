@@ -14,6 +14,7 @@ import java.io.File;
 
 /**
  * Created by Caspar on 23.12.2016.
+ * Classic Presenter for non FXML stuff
  */
 public class Presenter{
 
