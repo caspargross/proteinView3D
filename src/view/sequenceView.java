@@ -1,8 +1,10 @@
 package view;
 
 import javafx.collections.ListChangeListener;
+import javafx.scene.Node;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import model.ProteinGraph;
 import model.ProteinNode;
@@ -12,20 +14,22 @@ import model.ProteinNode;
  */
 public class SequenceView extends VBox {
 
+    ProteinView proteinView;
     ProteinGraph proteinGraph;
 
-    public SequenceView(ProteinGraph proteinGraph) {
-        this.proteinGraph = proteinGraph;
+    public SequenceView(ProteinView proteinView) {
+        this.proteinView = proteinView;
+        this.proteinGraph = proteinView.proteinGraph;
         setupListeners();
     }
 
     private void setupListeners(){
-        proteinGraph.nodeList.addListener((ListChangeListener<ProteinNode>) c -> {
+        proteinView.atomViewGroup.getChildren().addListener((ListChangeListener<? super Node>) c -> {
             while (c.next()) {
-                if (c.wasAdded()) {
-                    for (ProteinNode proteinNode:c.getAddedSubList()){
-                        System.out.println("Detected Change: Added atom");
-                        SequenceRow newRow = new SequenceRow(proteinNode);
+                if (c.wasAdded() || c.wasUpdated()) {
+                    for (Node node:c.getAddedSubList()){
+                        AtomView atomView = (AtomView) node;
+                        SequenceRow newRow = new SequenceRow(atomView.proteinNode);
                         getChildren().add(newRow);
                     }
                 }
@@ -35,30 +39,31 @@ public class SequenceView extends VBox {
 
 
     public class SequenceRow extends HBox{
-        ProteinNode proteinNode;
-        Text name = new Text();
-        Text aminoAcid = new Text();
-        Text secondaryStructure = new Text();
+        ProteinNode pN;
+        String rowString;
+        //Text name = new Text();
+        //Text aminoAcid = new Text();
+        //Text secondaryStructure = new Text();
         boolean isSelected = false;
 
         public SequenceRow(ProteinNode proteinNode) {
-            this.proteinNode = proteinNode;
-            this.name.setText(proteinNode.getName());
-            this.aminoAcid.setText(proteinNode.getResName());
-            this.secondaryStructure.setText(proteinNode.getSecondaryStructure());
+            this.pN = proteinNode;
+            rowString = String.format("%1$s3 %2$3s %3$4s %4$4s",pN.getResSeq(), pN.getName(), pN.getResName(), pN.getSecondaryStructure() );
+            Text desc = new Text(rowString);
+            desc.setFont(Font.font("Monospaced"));
             setOnMouseClicked(me ->{
                 if (!isSelected) {
                     setStyle("-fx-background-color: red;");
                     isSelected = true;
-                    proteinGraph.selectedNodes.add(proteinNode);
+                    proteinGraph.nodeListSelected.add(pN);
                 } else {
                     setStyle("-fx-background-color: grey;");
                     isSelected = false;
-                    proteinGraph.selectedNodes.remove(proteinNode);
+                    proteinGraph.nodeListSelected.remove(pN);
                 }
 
             });
-            getChildren().addAll(name, aminoAcid, secondaryStructure);
+            getChildren().addAll(desc);
         }
     }
 

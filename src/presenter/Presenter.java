@@ -20,7 +20,9 @@ public class Presenter{
     final double SCALE_DELTA = 1.1;
     private double downX;
     private double downY;
-    private double zPane = 0;
+    private double pivotX;
+    private double pivotY;
+    private double pivotZ;
 
 
     MainView view;
@@ -38,20 +40,22 @@ public class Presenter{
     }
 
     public void setupRotateAndMove() {
-        view.viewScene.setOnMousePressed((me) -> {
+        view.viewPane.setOnMousePressed((me) -> {
             downX = me.getSceneX();
             downY = me.getSceneY();
+            updatePivotPoint();
         });
 
         // Setup Rotate on left mouse button
-        view.setOnMouseDragged((me) ->{
+        view.viewPane.setOnMouseDragged((me) ->{
             if (me.getButton() == MouseButton.PRIMARY) {
                 System.out.println("Mouse dragged left");
+                System.out.println(pivotX +" "+ pivotY +" "+ pivotZ);
                 double deltaX = downX-me.getSceneX();
                 double deltaY = downY-me.getSceneY();
 
-                Point3D directionVector = new Point3D(deltaX, deltaY, zPane).crossProduct(0, 0, -1);
-                Rotate rotate = new Rotate(1.5, directionVector);
+                Point3D directionVector = new Point3D(-deltaY, deltaX, 0);
+                Rotate rotate = new Rotate(1.4, pivotX, pivotY, pivotZ, directionVector);
 
                 view.woldTransformProperty.setValue(rotate.createConcatenation(view.woldTransformProperty.getValue()));
 
@@ -78,14 +82,17 @@ public class Presenter{
 
     // Zoom in Protein Scene
     public void setupZoom() {
-        view.viewScene.setOnScroll((se) -> {
+        view.viewPane.setOnScroll((se) -> {
+            updatePivotPoint();
+
             System.out.println("Mouse scrolled");
+            System.out.println(view.proteinView.getBoundsInParent().toString());
             if (se.getDeltaY() == 0) {
                 return;
             }
 
             double scaleFactor = (se.getDeltaY() > 0) ? SCALE_DELTA : 1/ SCALE_DELTA;
-            Scale scale = new Scale(scaleFactor, scaleFactor, scaleFactor);
+            Scale scale = new Scale(scaleFactor, scaleFactor, scaleFactor, pivotX, pivotY, pivotZ);
             view.woldTransformProperty.setValue(scale.createConcatenation(view.woldTransformProperty.getValue()));
         });
     }
@@ -95,6 +102,12 @@ public class Presenter{
         view.bottomPane.setOnMouseEntered(me -> {
             System.out.println("HOVERING OVER SOMETHING");
         });
+    }
+
+    public void updatePivotPoint(){
+        pivotX = view.proteinView.getBoundsInParent().getMaxX()-view.proteinView.getBoundsInParent().getWidth()/2;
+        pivotY = view.proteinView.getBoundsInParent().getMaxY()-view.proteinView.getBoundsInParent().getHeight()/2;
+        pivotZ = view.proteinView.getBoundsInParent().getMaxZ()-view.proteinView.getBoundsInParent().getDepth()/2;
     }
 
 
@@ -128,9 +141,6 @@ public class Presenter{
         view.showBonds.selectedProperty().set(true);
         view.showBackbone.selectedProperty().setValue(true);
         view.showResidues.selectedProperty().setValue(true);
-
-
-
 
         //view.showAtoms.setOnAction(e -> view.getProteinView().showAtoms(view.showAtoms.selectedProperty().get()));
         //view.showBonds.setOnAction(e -> view.getProteinView().showBonds(view.showBonds.selectedProperty().get()));

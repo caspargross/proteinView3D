@@ -5,6 +5,7 @@ import com.sun.javafx.geom.transform.BaseTransform;
 import javafx.beans.property.Property;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Camera;
 import javafx.scene.PerspectiveCamera;
 import javafx.scene.SceneAntialiasing;
@@ -68,16 +69,28 @@ public class MainView extends BorderPane{
     public MainView(ProteinGraph proteinGraph) {
         this.model = proteinGraph;
 
-        // Create viewPane with ProteinView
-        bottomPane = new Pane();
-        topPane = new Pane(headerLabel);
-        topPane.setPickOnBounds(false);
-        viewPane = new StackPane(bottomPane, topPane);
-        viewPane.setStyle("-fx-background-color: rgba(0, 200, 200, 1); -fx-background-radius: 10;");
-        viewScene  = new SubScene(viewPane, 800, 800, true, SceneAntialiasing.BALANCED);
+        // Create new views
+        proteinView = new ProteinView(model);
+        sequenceView = new SequenceView(proteinView);
+
+        // Setup viewScenes with ProteinView
+        viewScene  = new SubScene(proteinView, 800, 800, true, SceneAntialiasing.BALANCED);
         viewScene.minWidth(400);
         viewScene.minHeight(400);
 
+
+        // Setup TopPane and BottomPane
+        topPane = new Pane();
+        topPane.getChildren().add(new Label("TOPPANE"));
+        topPane.setPickOnBounds(false);
+        bottomPane = new Pane();
+        bottomPane.getChildren().add(viewScene);
+        bottomPane.setPickOnBounds(false);
+        viewPane = new StackPane(bottomPane, topPane);
+        viewPane.setStyle("-fx-background-color: rgba(0, 200, 200, 0); -fx-background-radius: 10;");
+        viewPane.setAlignment(bottomPane, Pos.TOP_LEFT);
+        //bottomPane.setStyle("-fx-background-color: rgba(30, 70, 200, 1); -fx-background-radius: 10;");
+        viewScene.setStyle("-fx-background-color: rgba(30, 70, 200, 1); -fx-background-radius: 10;");
         setCamera();
 
         // Create sequencePane with protein sequence
@@ -86,6 +99,7 @@ public class MainView extends BorderPane{
         sequencePane.setMaxWidth(200);
         sequencePane.setPadding(new Insets(10));
         sequencePane.setStyle("-fx-background-color: grey; -fx-background-radius: 10;");
+        sequencePane.setContent(sequenceView);
 
         // Assign Panes to the Layout
         setTop(new HBox(
@@ -95,7 +109,7 @@ public class MainView extends BorderPane{
         ));
         setRight(sequencePane);
         setLeft(viewElements);
-        setCenter(viewScene);
+        setCenter(viewPane);
 
         // Add WorldTransform
         woldTransformProperty = new SimpleObjectProperty<>(new Transform() {
@@ -112,15 +126,11 @@ public class MainView extends BorderPane{
 
         woldTransformProperty.addListener((observable, oldValue, newValue) -> {
             System.out.println("woldTransform Rotated");
-            bottomPane.getTransforms().setAll(newValue);
+            proteinView.getTransforms().setAll(newValue);
         });
 
 
-        // Create empty view
-        proteinView = new ProteinView(model);
-        sequenceView = new SequenceView(proteinView);
-        bottomPane.getChildren().add(proteinView);
-        sequencePane.setContent(sequenceView);
+
     }
 
 
