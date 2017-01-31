@@ -1,5 +1,8 @@
 package view;
 
+import javafx.beans.Observable;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.value.ChangeListener;
 import javafx.collections.ListChangeListener;
 import javafx.scene.Group;
 import model.ProteinEdge;
@@ -10,12 +13,15 @@ import model.ProteinNode;
 /**
  * Created by Caspar on 23.12.2016.
  */
+
 public class ProteinView extends Group {
 
     public Group atomViewGroup;
     Group bondViewGroup;
     Group bondConnectionViewGroup;
     ProteinGraph proteinGraph;
+
+    public ObjectProperty<Boolean> showAtoms;
 
     double minX = Double.MAX_VALUE;
     double maxX = 0;
@@ -172,5 +178,7 @@ public class ProteinView extends Group {
     public double getMidY(){
         return (maxY+minY)/2;
     }
+
+
 
 }

@@ -37,7 +37,7 @@ public class Presenter{
         setupRotateAndMove();
         setupZoom();
         setupMouseHover();
-        createButtonEvents();
+        //createButtonEvents();
     }
 
     public void setupRotateAndMove() {
@@ -117,6 +117,7 @@ public class Presenter{
     // Button events in Main View
     private void createButtonEvents(){
         // Open File
+        /**
         view.openFile.setOnAction(e ->{
             readPDB();
         });
@@ -142,10 +143,11 @@ public class Presenter{
         view.showBonds.selectedProperty().set(true);
         view.showBackbone.selectedProperty().setValue(true);
         view.showResidues.selectedProperty().setValue(true);
-
-        //view.showAtoms.setOnAction(e -> view.getProteinView().showAtoms(view.showAtoms.selectedProperty().get()));
+        *
         //view.showBonds.setOnAction(e -> view.getProteinView().showBonds(view.showBonds.selectedProperty().get()));
 
+        **/
+        //view.showAtoms.setOnAction(e -> view.getProteinView().showAtoms(view.showAtoms.selectedProperty().get()));
 
     }
 
@@ -162,7 +164,7 @@ public class Presenter{
         model.assignBonds();
 
         //view.setInitialTransform();
-        view.headerLabel.setText(model.getHeader());
+        //view.headerLabel.setText(model.getHeader());
         System.out.println("Finished PDB Parser action");
 
     }

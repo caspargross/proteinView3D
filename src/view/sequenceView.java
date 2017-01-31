@@ -48,7 +48,7 @@ public class SequenceView extends VBox {
 
         public SequenceRow(ProteinNode proteinNode) {
             this.pN = proteinNode;
-            rowString = String.format("%1$s3 %2$3s %3$4s %4$4s",pN.getResSeq(), pN.getName(), pN.getResName(), pN.getSecondaryStructure() );
+            rowString = String.format("%1$4s %2$3s %3$4s %4$4s",pN.getResSeq(), pN.getName(), pN.getResName(), pN.getSecondaryStructure() );
             Text desc = new Text(rowString);
             desc.setFont(Font.font("Monospaced"));
             setOnMouseClicked(me ->{

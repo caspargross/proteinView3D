@@ -27,13 +27,14 @@ import java.io.File;
  * This is the main View class. All View elements are defined here.
  */
 
-public class MainView extends BorderPane{
+public class MainView extends StackPane{
 
     // Model (ProteinGraph)
     public ProteinGraph model;
 
     // UI Elements
-    public Label leftLabel = new Label("Left Sidebar");
+    /**
+     * public Label leftLabel = new Label("Left Sidebar");
     public Label headerLabel = new Label("");
     public Button openFile = new Button("Open");
     public Button increaseAtomSize = new Button("Atom ++");
@@ -50,12 +51,12 @@ public class MainView extends BorderPane{
 
     public VBox viewElements = new VBox(leftLabel, showAtoms, showBonds, showBackbone, showResidues,
             showSidechains, showTriangles, showSecondaryStructure);
-
+     **/
 
     // Content views and Scene
     public SubScene viewScene;
     public ProteinView proteinView;
-    public SequenceView sequenceView;
+    //public SequenceView sequenceView;
 
     // Content panes
     public ScrollPane sequencePane;
@@ -71,7 +72,7 @@ public class MainView extends BorderPane{
 
         // Create new views
         proteinView = new ProteinView(model);
-        sequenceView = new SequenceView(proteinView);
+        //sequenceView = new SequenceView(proteinView);
 
         // Setup viewScenes with ProteinView
         viewScene  = new SubScene(proteinView, 800, 800, true, SceneAntialiasing.BALANCED);
@@ -94,15 +95,16 @@ public class MainView extends BorderPane{
         setCamera();
 
         // Create sequencePane with protein sequence
-        sequencePane = new ScrollPane();
+        /**sequencePane = new ScrollPane();
         sequencePane.setMinWidth(200);
         sequencePane.setMaxWidth(200);
         sequencePane.setPadding(new Insets(10));
         sequencePane.setStyle("-fx-background-color: grey; -fx-background-radius: 10;");
         sequencePane.setContent(sequenceView);
+         **/
 
         // Assign Panes to the Layout
-        setTop(new HBox(
+        /** setTop(new HBox(
                 openFile,
                 increaseAtomSize, decreaseAtomSize,
                 increaseBondSize, decreaseBondSize
@@ -110,6 +112,8 @@ public class MainView extends BorderPane{
         setRight(sequencePane);
         setLeft(viewElements);
         setCenter(viewPane);
+        **/
+        getChildren().add(viewPane);
 
         // Add WorldTransform
         woldTransformProperty = new SimpleObjectProperty<>(new Transform() {

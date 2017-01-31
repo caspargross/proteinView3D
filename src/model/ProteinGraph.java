@@ -25,12 +25,16 @@ public class ProteinGraph {
     public ObservableList<ProteinEdge> edgeListSidechain=FXCollections.observableArrayList();
     public ObservableList<ProteinEdge> edgeListFull=FXCollections.observableArrayList();
 
+    // String with Amino Acid sequence (single letter code)
+    private String aminoAcidSequence;
+
     String header;
 
 
     public ProteinGraph() {
 
         System.out.println("New Protein Graph created");
+        aminoAcidSequence = "";
     }
 
     public void addAtom(
@@ -57,6 +61,7 @@ public class ProteinGraph {
 
         if (newNode.getName().equals("N")){
             nodeListBackbone.add(newNode);
+            aminoAcidSequence += aminoAcidTools.transFormCode(newNode.getResName());
         }
         if (newNode.getName().equals("O")){
             nodeListBackbone.add(newNode);
@@ -229,6 +234,8 @@ public class ProteinGraph {
     public String getHeader(){
         return header;
     }
+
+    public String getAminoAcidSequence() {return  aminoAcidSequence;}
 
     public void showAtoms(boolean selectionValue) {
         if (selectionValue) {
