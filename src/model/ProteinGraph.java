@@ -1,5 +1,7 @@
 package model;
 
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -28,7 +30,7 @@ public class ProteinGraph {
     // String with Amino Acid sequence (single letter code)
     private String aminoAcidSequence;
 
-    String header;
+    public StringProperty header = new SimpleStringProperty("");
 
 
     public ProteinGraph() {
@@ -135,8 +137,7 @@ public class ProteinGraph {
     }
 
     public void addHeader(String header){
-        this.header = header;
-
+        this.header.setValue(header);
     }
 
     public void assignBonds(){
@@ -231,9 +232,6 @@ public class ProteinGraph {
         return  sequenceInfo;
     }
 
-    public String getHeader(){
-        return header;
-    }
 
     public String getAminoAcidSequence() {return  aminoAcidSequence;}
 

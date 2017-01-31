@@ -1,8 +1,9 @@
 package view;
 
 import javafx.beans.Observable;
-import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.*;
 import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.ListChangeListener;
 import javafx.scene.Group;
 import model.ProteinEdge;
@@ -21,12 +22,12 @@ public class ProteinView extends Group {
     Group bondConnectionViewGroup;
     ProteinGraph proteinGraph;
 
-    public ObjectProperty<Boolean> showAtoms;
-
-    double minX = Double.MAX_VALUE;
-    double maxX = 0;
-    double minY = Double.MAX_VALUE;
-    double maxY = 0;
+    public Property<Boolean> showAtomsProperty = new SimpleBooleanProperty(Boolean.TRUE);
+    public Property<Boolean> showBondsProperty = new SimpleBooleanProperty(Boolean.TRUE);
+    public Property<Boolean> showRibbonsProperty = new SimpleBooleanProperty(Boolean.FALSE);
+    public Property<Boolean> showSecondaryStructureProperty = new SimpleBooleanProperty(Boolean.FALSE);
+    public DoubleProperty atomSizeProperty = new SimpleDoubleProperty(6);
+    public DoubleProperty bondSizeProperty = new SimpleDoubleProperty(3);
 
 
     public ProteinView(ProteinGraph proteinGraph){
@@ -88,11 +89,57 @@ public class ProteinView extends Group {
             }
         });
 
+        // Add listeners for view selection
+        showAtomsProperty.addListener((observable, oldValue, newValue) -> {
+            for (int i = 0; i < atomViewGroup.getChildren().size(); i++) {
+                AtomView atomView = (AtomView) atomViewGroup.getChildren().get(i);
+                atomView.setVisible(newValue);
+            }
+
+        });
+        showBondsProperty.addListener((observable, oldValue, newValue) -> {
+            for (int i = 0; i < bondViewGroup.getChildren().size(); i++) {
+                BondView bondView = (BondView) bondViewGroup.getChildren().get(i);
+                bondView.setVisible(newValue);
+            }
+            for (int i = 0; i < bondConnectionViewGroup.getChildren().size(); i++) {
+                BondConnectionView  bondConnectionView = (BondConnectionView) bondConnectionViewGroup.getChildren().get(i);
+                bondConnectionView.setVisible(newValue);
+            }
+
+        });
+        showRibbonsProperty.addListener((observable, oldValue, newValue) -> {
+
+        });
+        showSecondaryStructureProperty.addListener((observable, oldValue, newValue) -> {
+
+        });
+
+        // Add listeners for bond and atom size
+        atomSizeProperty.addListener((observable, oldValue, newValue) -> {
+            for (int i = 0; i < atomViewGroup.getChildren().size(); i++) {
+                AtomView atomView = (AtomView) atomViewGroup.getChildren().get(i);
+                atomView.sphere.setRadius((Double)newValue * atomView.RADIUS_FACTOR);
+            }
+        });
+        bondSizeProperty.addListener((observable, oldValue, newValue) -> {
+            for (int i = 0; i < bondViewGroup.getChildren().size(); i++) {
+                BondView bondView = (BondView) bondViewGroup.getChildren().get(i);
+                bondView.line.cylinder.setRadius((Double) newValue *bondView.RADIUS_FACTOR);
+            }
+            for (int i = 0; i < bondConnectionViewGroup.getChildren().size(); i++) {
+                BondConnectionView  bondConnectionView = (BondConnectionView) bondConnectionViewGroup.getChildren().get(i);
+                bondConnectionView.sphere.setRadius((Double) newValue *bondConnectionView.RADIUS_FACTOR);
+            }
+        });
+
+
         getChildren().add(bondConnectionViewGroup);
         getChildren().add(bondViewGroup);
         getChildren().add(atomViewGroup);
 
         System.out.println("Created new ProteinView");
+
 
     }
 
@@ -100,10 +147,6 @@ public class ProteinView extends Group {
 
         AtomView atomView = new AtomView(proteinNode);
         atomViewGroup.getChildren().add(atomView);
-        if (atomView.getTranslateX() < minX) minX = atomView.getTranslateX();
-        if (atomView.getTranslateX() > maxX) maxX = atomView.getTranslateX();
-        if (atomView.getTranslateY() < minY) minY = atomView.getTranslateY();
-        if (atomView.getTranslateY() > maxY) maxY = atomView.getTranslateY();
         System.out.println("Atom View to AtomViewGroup" + atomViewGroup.getChildren().size());
 
     }
@@ -169,14 +212,6 @@ public class ProteinView extends Group {
             if (currentAtomView.proteinNode == proteinNode) return currentAtomView;
         }
         return null;
-    }
-
-    public double getMidX(){
-        return (maxX+minX)/2;
-    }
-
-    public double getMidY(){
-        return (maxY+minY)/2;
     }
 
 

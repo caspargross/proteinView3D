@@ -15,7 +15,9 @@ import java.io.File;
 /**
  * Created by Caspar on 23.12.2016.
  * Classic Presenter for non FXML stuff
- */
+ * This Presenter is used for actions in the GraphView and the SequenceView
+*/
+
 public class Presenter{
 
     final double SCALE_DELTA = 1.1;
@@ -37,18 +39,18 @@ public class Presenter{
         setupRotateAndMove();
         setupZoom();
         setupMouseHover();
-        //createButtonEvents();
+        updatePivotPoint();
     }
 
     public void setupRotateAndMove() {
-        view.viewPane.setOnMousePressed((me) -> {
+        view.setOnMousePressed((me) -> {
             downX = me.getSceneX();
             downY = me.getSceneY();
             updatePivotPoint();
         });
 
         // Setup Rotate on left mouse button
-        view.viewPane.setOnMouseDragged((me) ->{
+        view.setOnMouseDragged((me) ->{
             if (me.getButton() == MouseButton.PRIMARY) {
                 System.out.println("Mouse dragged left");
                 System.out.println(pivotX +" "+ pivotY +" "+ pivotZ);
@@ -56,7 +58,7 @@ public class Presenter{
                 double deltaY = downY-me.getSceneY();
 
                 Point3D directionVector = new Point3D(-deltaY, deltaX, 0);
-                Rotate rotate = new Rotate(1.4, pivotX, pivotY, pivotZ, directionVector);
+                Rotate rotate = new Rotate(1.6, pivotX, pivotY, pivotZ, directionVector);
 
                 view.woldTransformProperty.setValue(rotate.createConcatenation(view.woldTransformProperty.getValue()));
 
@@ -83,7 +85,7 @@ public class Presenter{
 
     // Zoom in Protein Scene
     public void setupZoom() {
-        view.viewPane.setOnScroll((se) -> {
+        view.setOnScroll((se) -> {
             updatePivotPoint();
 
             System.out.println("Mouse scrolled");
@@ -163,7 +165,7 @@ public class Presenter{
         model = pdbParser.getProteinGraph();
         model.assignBonds();
 
-        //view.setInitialTransform();
+        view.setInitialTransform();
         //view.headerLabel.setText(model.getHeader());
         System.out.println("Finished PDB Parser action");
 

@@ -24,10 +24,12 @@ public class BlastService extends Service<String>{
     private RemoteBlastClient.Status status;
     public Property<String> statusProperty = new SimpleObjectProperty<>();
 
-
+    //TODO Progress, time needed message and additional stuff
 
     @Override
     protected Task<String> createTask() {
+
+        final StringBuilder output = new StringBuilder();
         // Task class
         return new Task<String>() {
             @Override
@@ -49,7 +51,23 @@ public class BlastService extends Service<String>{
                     statusProperty.setValue(status.toString());
                 } while (status == RemoteBlastClient.Status.searching);
 
-                return "";
+                // Search finished:
+
+                if (status == RemoteBlastClient.Status.hitsFound) {
+                    for (String line : remoteBlastClient.getRemoteAlignments()) {
+                        output.append(line + "\n");
+                    }
+                }
+
+                if (status == RemoteBlastClient.Status.noHitsFound) {
+                    output.append("No hits found. Try again with new sequence or different settings");
+                }
+
+                else {
+                    output.append("Blast Search failed. Check connection to server");
+                }
+
+                return  output.toString();
             }
         };
     }

@@ -30,8 +30,6 @@ public class ProteinNode {
         this.y = y;
         this.z = z;
         this.element = element;
-        //this.secondaryStructure = new SecondaryStructure("", 0, "", '0', 0, "", '0', 0, 0);
-        //this.secondaryStructureLocation = "";
     }
 
     public void setSecondaryStructure (SecondaryStructure sS, String location){
@@ -43,7 +41,6 @@ public class ProteinNode {
     }
 
     public String getSecondaryStructure (){
-        // TODO Avoid != null statement if possible
         System.err.println("TRYING TO READ SS FROM" + getResSeq());
         try {
             return secondaryStructure.getStructureDescription();

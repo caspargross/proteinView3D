@@ -2,7 +2,7 @@ package presenter;
 
 /**
  * Created by Caspar on 26.01.2017.
- * This is the controller class to hande stuff in the FXML file
+ * This is the controller handles layout Elements and Events in the FXML File
  *
  */
 import java.net.URL;
@@ -10,7 +10,6 @@ import java.util.ResourceBundle;
 
 import blast.BlastService;
 import blast.RemoteBlastClient;
-import javafx.beans.property.Property;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -24,10 +23,13 @@ import view.SequenceView;
 
 public class Controller {
 
-    // Additional View, Presenter and Model elements
-    // Some parts of this run still as MVP-Model
+    /**
+     * Declaration of main parts of the application
+     * model is used to store and compute data extracted from the PDB file
+     *
+     * */
     public ProteinGraph model;
-    public MainView root;
+    public MainView mainView;
     public Presenter presenter;
     public BlastService blastService;
 
@@ -106,7 +108,16 @@ public class Controller {
     @FXML
     private TitledPane x6;
 
-    /** Events to the corresponding buttons **/
+    // Status bar elements
+    @FXML
+    private Label lEleftLabel;
+
+    @FXML
+    private Label lErightLabel;
+
+    /**
+     * Events to the corresponding buttons
+     **/
     // Menu events
     @FXML
     void menuOpenEvent(ActionEvent event) {
@@ -114,24 +125,6 @@ public class Controller {
         System.out.println("Open File Button pressed");
     }
 
-    // Accordeon events
-    @FXML
-    void showAtomEvent(ActionEvent event) {
-        model.showAtoms(lEshowAtoms.isSelected());
-    }
-
-    @FXML
-    void showBondsEvent(ActionEvent event) {
-        model.showBonds(lEshowBonds.isSelected());
-    }
-
-    @FXML
-    void showRibbonViewEvent(ActionEvent event) {
-    }
-
-    @FXML
-    void showSecondaryStructureEvent(ActionEvent event) {
-    }
 
     // Blast search events
     @FXML
@@ -144,13 +137,9 @@ public class Controller {
         blastService.start();
         lEstatus.textProperty().bind(blastService.statusProperty);
 
-        //blastService.remoteBlastClient.setProgram(lEBlastVersionCbx.getValue());
-        //System.out.println(lEBlastVersionCbx.getValue().toString());
-        //System.out.println(lEdatabaseName.getText());
-        //System.out.println(blastService.getQuerySequence());
-
-
-        //blastService.startBlastQuery();
+        blastService.setOnSucceeded(event1 -> {
+            lEalignment.setContent(new TextArea(blastService.getValue()));
+        });
     }
 
     @FXML
@@ -180,27 +169,34 @@ public class Controller {
         model = new ProteinGraph();
 
         // Create View
-        root = new MainView(model);
+        mainView = new MainView(model);
 
         // Create Presenter
-        presenter = new Presenter(root, model);
+        presenter = new Presenter(mainView, model);
 
-        lEProteinViewTab.setContent(root);
+        lEProteinViewTab.setContent(mainView);
 
         // Initialize Chechbox with available blast models
         lEBlastVersionCbx.getItems().setAll(RemoteBlastClient.BlastProgram.values());
         lEBlastVersionCbx.getSelectionModel().select(RemoteBlastClient.BlastProgram.blastp);
 
+        // Initialize elements in status bar
+        lEleftLabel.textProperty().bind(model.header);
 
 
-
-
-        SequenceView sequenceView = new SequenceView(root.proteinView);
-        scrollPane.setContent(sequenceView);
+        scrollPane.setContent(mainView.sequenceView);
 
         // Bind buttons to the Properties
-
-
+        // Show view elements
+        lEshowAtoms.selectedProperty().bindBidirectional(mainView.proteinView.showAtomsProperty);
+        lEshowBonds.selectedProperty().bindBidirectional(mainView.proteinView.showBondsProperty);
+        lEshowRibbons.selectedProperty().bindBidirectional(mainView.proteinView.showRibbonsProperty);
+        lEshowSecondaryStructure.selectedProperty().bindBidirectional(mainView.proteinView.showSecondaryStructureProperty);
+        lEshowAtoms.selectedProperty().setValue(Boolean.TRUE);
+        lEshowBonds.selectedProperty().setValue(Boolean.TRUE);
+        // Change view size
+        lEAtomSize.valueProperty().bindBidirectional(mainView.proteinView.atomSizeProperty);
+        lEbondSize.valueProperty().bindBidirectional(mainView.proteinView.bondSizeProperty);
 
         }
 

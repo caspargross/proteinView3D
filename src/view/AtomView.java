@@ -13,7 +13,9 @@ public class AtomView extends Group{
     final double RADIUS_O = 6;
     final double RADIUS_N = 6.5;
     final double RADIUS_C = 7;
-    final double RADIUS_FACTOR = 0.1;
+    final double RADIUS_FACTOR = 0.18;
+
+
 
     ProteinNode proteinNode;
     Sphere sphere;

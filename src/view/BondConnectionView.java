@@ -13,7 +13,7 @@ import model.ProteinNode;
  */
 public class BondConnectionView extends Group{
 
-    final double RADIUS_FACTOR = 0.05;
+    final double RADIUS_FACTOR = 0.1;
 
     ProteinNode proteinNode;
     Sphere sphere;

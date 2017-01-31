@@ -9,7 +9,7 @@ import javafx.scene.Group;
  */
 public class BondView extends Group{
 
-    final double RADIUS_FACTOR = 0.05;
+    final double RADIUS_FACTOR = 0.1;
     ProteinEdge proteinEdge;
     public MyLine3D line;
 
