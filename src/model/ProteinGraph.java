@@ -1,5 +1,7 @@
 package model;
 
+import javafx.beans.property.Property;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
@@ -30,6 +32,8 @@ public class ProteinGraph {
     // String with Amino Acid sequence (single letter code)
     private String aminoAcidSequence;
 
+
+    public Property<Boolean> pdbFullyRead= new SimpleBooleanProperty(Boolean.FALSE);
     public StringProperty header = new SimpleStringProperty("");
 
 
@@ -62,25 +66,28 @@ public class ProteinGraph {
                 element);
 
         if (newNode.getName().equals("N")){
-            nodeListBackbone.add(newNode);
-            aminoAcidSequence += aminoAcidTools.transFormCode(newNode.getResName());
+            nodeList.add(newNode);
+            aminoAcidSequence += AminoAcidTools.transFormCode(newNode.getResName());
+            assignAtomToStructure(newNode);
         }
         if (newNode.getName().equals("O")){
-            nodeListBackbone.add(newNode);
+            nodeList.add(newNode);
+            assignAtomToStructure(newNode);
         }
         if (newNode.getName().equals("C")){
-            nodeListBackbone.add(newNode);
+            nodeList.add(newNode);
+            assignAtomToStructure(newNode);
         }
         if (newNode.getName().equals("CA")){
-            nodeListResidue.add(newNode);
+            nodeList.add(newNode);
+            assignAtomToStructure(newNode);
         }
         if (newNode.getName().equals("CB")){
-            nodeListResidue.add(newNode);
+            nodeList.add(newNode);
+            assignAtomToStructure(newNode);
         }
 
-
         System.out.println(newNode.getName());
-        assignStructureToAtom(newNode);
         nodeListFull.add(newNode);
     }
 
@@ -152,10 +159,14 @@ public class ProteinGraph {
             if (currentAtom.getName().equals("CA")) {
                 addBond(currentAtom, nextAtom("C", i), "CA-C");
             }
-            // Handle exception when no CB exists?
-            if (currentAtom.getName().equals("CA")) {
-                addBond(currentAtom, nextAtom("CB", i), "CA-CB");
+
+            //Dont create Ca-Cb bond for Glycine
+            if (!currentAtom.getResName().equals("GLY")) {
+                if (currentAtom.getName().equals("CA")) {
+                    addBond(currentAtom, nextAtom("CB", i), "CA-CB");
+                }
             }
+
             if (currentAtom.getName().equals("C")) {
                 addBond(currentAtom, nextAtom("O", i), "C-O");
             }
@@ -169,27 +180,18 @@ public class ProteinGraph {
         // Check if end of protein is reached
         if (sourceAtom != targetAtom) {
             ProteinEdge newBond = new ProteinEdge(sourceAtom, targetAtom, bondDescription);
-            edgeListFull.add(newBond);
+            edgeList.add(newBond);
             System.out.println("Bond added");
         }
     }
 
     // Check for every atom if the resSeq is inside a secondary Structure
-    public void assignStructureToAtom(ProteinNode proteinNode){
+    public void assignAtomToStructure(ProteinNode proteinNode){
 
-        for (int i = 0; i < secondaryStructureList.size(); i++) {
-            SecondaryStructure sS =  secondaryStructureList.get(i);
-            // Atom is at the start of secondary Structure
-            if (proteinNode.getResSeq() == sS.initSeqNum){
-                proteinNode.setSecondaryStructure(sS, "start");
-            }
-            // Atom is in the middle of secondary Structure
-            if (proteinNode.getResSeq() > sS.initSeqNum && proteinNode.getResSeq() < sS.endSeqNum){
-                proteinNode.setSecondaryStructure(sS, "middle");
-            }
-            // Atom is at the end of secondary Structure
-            if (proteinNode.getResSeq() == sS.endSeqNum){
-                proteinNode.setSecondaryStructure(sS, "end");
+        for (SecondaryStructure sS : secondaryStructureList) {
+            if (proteinNode.getResSeq() >= sS.getInitSeqNum() && proteinNode.getResSeq() <= sS.getEndSeqNum()) {
+                sS.addNode(proteinNode);
+                System.out.println("Added Node to secondary Structure");
             }
         }
     }
@@ -235,29 +237,5 @@ public class ProteinGraph {
 
     public String getAminoAcidSequence() {return  aminoAcidSequence;}
 
-    public void showAtoms(boolean selectionValue) {
-        if (selectionValue) {
-            for (ProteinNode proteinNode:nodeListBackbone ) {
-                nodeList.add(proteinNode);
-            }
-            for (ProteinNode proteinNode:nodeListResidue ) {
-                nodeList.add(proteinNode);
-            }
-        } else {
-            nodeList.remove(0, nodeList.size());
-        }
-    }
 
-    public void showBonds(boolean selectionValue) {
-        if (selectionValue) {
-            for (ProteinEdge proteinEdge:edgeListFull){
-                edgeList.add(proteinEdge);
-            }
-
-        } else {
-            edgeList.remove(0, edgeList.size());
-        }
-
-
-    }
 }

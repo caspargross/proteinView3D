@@ -12,13 +12,15 @@ import blast.BlastService;
 import blast.RemoteBlastClient;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.chart.BarChart;
+import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.NumberAxis;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
+import model.AminoAcidTools;
 import model.ProteinGraph;
+import model.BarChartData;
 import view.MainView;
-import view.SequenceView;
-
-
 
 
 public class Controller {
@@ -115,6 +117,10 @@ public class Controller {
     @FXML
     private Label lErightLabel;
 
+    // Bar Chart
+    @FXML
+    private BarChart lEBarChart;
+
     /**
      * Events to the corresponding buttons
      **/
@@ -197,6 +203,10 @@ public class Controller {
         // Change view size
         lEAtomSize.valueProperty().bindBidirectional(mainView.proteinView.atomSizeProperty);
         lEbondSize.valueProperty().bindBidirectional(mainView.proteinView.bondSizeProperty);
+
+        // Add Bar Chart
+        BarChartData barChartData = new BarChartData(model);
+        //lEBarChart = new BarChartData(new CategoryAxis(AminoAcidTools.AminoAcidType.values()), new NumberAxis());
 
         }
 

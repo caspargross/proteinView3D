@@ -55,13 +55,13 @@
                 <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                   <children>
                     <Slider id="layoutElementBondSize" fx:id="lEbondSize" layoutX="14.0" layoutY="73.0" majorTickUnit="5.0" max="10.0" minorTickCount="1" prefWidth="147.0" showTickLabels="false" showTickMarks="true" value="3.0" />
-                    <Slider id="" fx:id="lEAtomSize" layoutX="14.0" layoutY="30.0" majorTickUnit="5.0" max="10.0" minorTickCount="1" prefWidth="147.0" showTickMarks="true" snapToTicks="true" value="5.0" />
+                    <Slider id="" fx:id="lEAtomSize" layoutX="14.0" layoutY="30.0" majorTickUnit="5.0" max="10.0" minorTickCount="1" prefWidth="147.0" showTickMarks="true" snapToTicks="false" value="5.0" />
                     <VBox id="VBox" alignment="TOP_LEFT" layoutX="14.0" layoutY="106.0" spacing="10.0">
                       <children>
-                        <RadioButton fx:id="lEshowAtoms" mnemonicParsing="false"  text="Atoms" />
-                        <RadioButton fx:id="lEshowBonds" mnemonicParsing="false"  text="Bonds" />
-                        <RadioButton fx:id="lEshowSecondaryStructure" mnemonicParsing="false"  text="Secondary Structure" />
-                        <RadioButton fx:id="lEshowRibbons" mnemonicParsing="false"  text="Ribbon View" />
+                        <RadioButton fx:id="lEshowAtoms" mnemonicParsing="false" text="Atoms" />
+                        <RadioButton fx:id="lEshowBonds" mnemonicParsing="false" text="Bonds" />
+                        <RadioButton fx:id="lEshowSecondaryStructure" mnemonicParsing="false" text="Secondary Structure" />
+                        <RadioButton fx:id="lEshowRibbons" mnemonicParsing="false" text="Ribbon View" />
                       </children>
                     </VBox>
                     <Label layoutX="14.0" layoutY="14.0" text="Atom size" />
@@ -120,14 +120,14 @@
               <content>
                 <AnchorPane id="statPane" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                   <children>
-                    <AreaChart id="AreaChartNxN" layoutX="12.0" layoutY="14.0">
+                    <BarChart layoutX="0.0" layoutY="0.0" prefHeight="402.0" prefWidth="532.0" title="Amino acid properties">
                       <xAxis>
-                        <NumberAxis side="BOTTOM" />
+                        <CategoryAxis side="BOTTOM" />
                       </xAxis>
                       <yAxis>
                         <NumberAxis side="LEFT" />
                       </yAxis>
-                    </AreaChart>
+                    </BarChart>
                   </children>
                 </AnchorPane>
               </content>
@@ -154,7 +154,7 @@
     </SplitPane>
     <HBox id="HBox" alignment="CENTER_LEFT" spacing="5.0" VBox.vgrow="NEVER">
       <children>
-        <Label id="lELeftStatus" fx:id="lEleftLabel" maxHeight="1.7976931348623157E308" maxWidth="-1.0" text="Left status" textFill="#808080" HBox.hgrow="ALWAYS">
+        <Label id="lELeftStatus" fx:id="lEleftLabel" maxHeight="1.7976931348623157E308" maxWidth="-1.0" text="Left status" textFill="GREY" HBox.hgrow="ALWAYS">
           <font>
             <Font size="11.0" fx:id="x3" />
           </font>

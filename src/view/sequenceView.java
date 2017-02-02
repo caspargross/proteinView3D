@@ -8,6 +8,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import model.ProteinGraph;
 import model.ProteinNode;
+import model.SecondaryStructure;
 
 /**
  * Created by Caspar on 07.01.2017.
@@ -39,18 +40,23 @@ public class SequenceView extends VBox {
 
 
     public class SequenceRow extends HBox{
-        ProteinNode pN;
+
         String rowString;
-        //Text name = new Text();
-        //Text aminoAcid = new Text();
-        //Text secondaryStructure = new Text();
         boolean isSelected = false;
 
-        public SequenceRow(ProteinNode proteinNode) {
-            this.pN = proteinNode;
-            rowString = String.format("%1$4s %2$3s %3$4s %4$4s",pN.getResSeq(), pN.getName(), pN.getResName(), pN.getSecondaryStructure() );
+        public SequenceRow(ProteinNode pN) {
+            //this.pN = proteinNode;
+            rowString = String.format("%1$4s %2$3s %3$4s", pN.getResSeq(), pN.getName(), pN.getResName());
             Text desc = new Text(rowString);
             desc.setFont(Font.font("Monospaced"));
+            Text sSdesc = new Text("");
+
+            for (SecondaryStructure sS : proteinGraph.secondaryStructureList) {
+                if (sS.getNodesInside().contains(pN)){
+                    sSdesc.setText(sS.getType());
+                }
+            }
+
             setOnMouseClicked(me ->{
                 if (!isSelected) {
                     setStyle("-fx-background-color: red;");
@@ -63,7 +69,7 @@ public class SequenceView extends VBox {
                 }
 
             });
-            getChildren().addAll(desc);
+            getChildren().addAll(desc, sSdesc);
         }
     }
 

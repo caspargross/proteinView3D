@@ -15,8 +15,8 @@ public class ProteinNode {
     double y;
     double z;
     String element;
-    SecondaryStructure secondaryStructure;
-    String secondaryStructureLocation;
+    //SecondaryStructure secondaryStructure;
+    //String secondaryStructureLocation;
 
     public ProteinNode(int serial, String name, Character altLoc, String resName, Character chainID,
                        int resSeq, double x, double y, double z, String element) {
@@ -32,7 +32,7 @@ public class ProteinNode {
         this.element = element;
     }
 
-    public void setSecondaryStructure (SecondaryStructure sS, String location){
+    /**public void setSecondaryStructure (SecondaryStructure sS, String location){
         this.secondaryStructure = sS;
         this.secondaryStructureLocation = location;
         if (sS != null){
@@ -47,6 +47,7 @@ public class ProteinNode {
         } catch (NullPointerException e){return "";}
 
     }
+     **/
 
     public double getX() {
         return x;

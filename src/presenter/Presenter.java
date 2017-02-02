@@ -58,7 +58,8 @@ public class Presenter{
                 double deltaY = downY-me.getSceneY();
 
                 Point3D directionVector = new Point3D(-deltaY, deltaX, 0);
-                Rotate rotate = new Rotate(1.6, pivotX, pivotY, pivotZ, directionVector);
+                double angle = 0.5 * (Math.sqrt(Math.pow(deltaX, 2) + Math.pow(deltaY, 2)));
+                Rotate rotate = new Rotate(angle, pivotX, pivotY, pivotZ, directionVector);
 
                 view.woldTransformProperty.setValue(rotate.createConcatenation(view.woldTransformProperty.getValue()));
 
