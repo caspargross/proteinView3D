@@ -11,6 +11,8 @@ import model.ProteinGraph;
 import model.ProteinNode;
 import model.SecondaryStructure;
 
+import java.util.ArrayList;
+
 
 /**
  * Created by Caspar on 23.12.2016.
@@ -22,7 +24,7 @@ public class ProteinView extends Group {
     private Group bondViewGroup;
     private Group bondConnectionViewGroup;
     private Group ribbonViewGroup;
-    private Group secondaryStructureViewGroup;
+    public Group secondaryStructureViewGroup;
 
     ProteinGraph proteinGraph;
 
@@ -193,8 +195,11 @@ public class ProteinView extends Group {
 
     public void createSecondaryStructureView(SecondaryStructure sS){
 
-        SecondaryStructureView  newSSView = new SecondaryStructureView(sS.getType(),
-                findAtomViewFor(sS.getStartNode()), findAtomViewFor(sS.getEndNode()));
+        ArrayList<AtomView> atomViewsInside = new ArrayList<>();
+        for (ProteinNode node : sS.getNodesInside()) {
+            atomViewsInside.add(findAtomViewFor(node));
+        }
+        SecondaryStructureView  newSSView = new SecondaryStructureView(sS.getType(), atomViewsInside);
         secondaryStructureViewGroup.getChildren().add(newSSView);
     }
 

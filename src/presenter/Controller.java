@@ -188,6 +188,7 @@ public class Controller {
 
         // Initialize elements in status bar
         lEleftLabel.textProperty().bind(model.header);
+        lErightLabel.textProperty().bind(presenter.hoverInfo);
 
 
         scrollPane.setContent(mainView.sequenceView);
@@ -200,6 +201,8 @@ public class Controller {
         lEshowSecondaryStructure.selectedProperty().bindBidirectional(mainView.proteinView.showSecondaryStructureProperty);
         lEshowAtoms.selectedProperty().setValue(Boolean.TRUE);
         lEshowBonds.selectedProperty().setValue(Boolean.TRUE);
+        lEshowSecondaryStructure.selectedProperty().setValue(Boolean.FALSE);
+        lEshowRibbons.selectedProperty().setValue(Boolean.FALSE);
         // Change view size
         lEAtomSize.valueProperty().bindBidirectional(mainView.proteinView.atomSizeProperty);
         lEbondSize.valueProperty().bindBidirectional(mainView.proteinView.bondSizeProperty);

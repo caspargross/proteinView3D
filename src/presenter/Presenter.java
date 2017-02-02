@@ -1,13 +1,18 @@
 package presenter;
 
+import javafx.beans.property.Property;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.geometry.Point3D;
 import javafx.scene.input.MouseButton;
 import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Scale;
 import javafx.scene.transform.Translate;
 import javafx.stage.FileChooser;
+import javafx.scene.Node;
 import model.PdbParser;
 import model.ProteinGraph;
+import view.AtomView;
 import view.MainView;
 
 import java.io.File;
@@ -27,6 +32,7 @@ public class Presenter{
     private double pivotY;
     private double pivotZ;
 
+    Property<String> hoverInfo = new SimpleStringProperty("");
 
     MainView view;
     ProteinGraph model;
@@ -101,11 +107,13 @@ public class Presenter{
         });
     }
 
-    // Hovering Mouse over Atoms displays additional information
+    //TODO SETUP HOVER INFO
     public void setupMouseHover(){
-        view.bottomPane.setOnMouseEntered(me -> {
-            System.out.println("HOVERING OVER SOMETHING");
-        });
+        //view.proteinView.atomViewGroup.setOnMouseEntered(me -> {
+        //    AtomView node = (AtomView) me.getPickResult().getIntersectedNode();
+
+        //    hoverInfo.setValue(node.toString());
+        //});
     }
 
     public void updatePivotPoint(){

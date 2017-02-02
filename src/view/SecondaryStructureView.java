@@ -13,6 +13,8 @@ import javafx.scene.transform.Transform;
 import javafx.scene.transform.Translate;
 import model.SecondaryStructure;
 
+import java.util.ArrayList;
+
 /**
  * Created by Caspar on 31.01.2017.
  */
@@ -21,12 +23,16 @@ public class SecondaryStructureView extends Group {
     String type;
     AtomView startAtom;
     AtomView endAtom;
+    ArrayList<AtomView> atomViewList = new ArrayList<>();
+    int direction; // Strand direction: 1 forward, -1 backward, 0 sheet
 
-    public SecondaryStructureView(String type, AtomView startAtom, AtomView endAtom) {
+    public SecondaryStructureView(String type, ArrayList<AtomView> atomViewList) {
+
 
         this.type = type;
-        this.startAtom = startAtom;
-        this.endAtom = endAtom;
+        this.atomViewList = atomViewList;
+        this.startAtom = atomViewList.get(0);
+        this.endAtom = atomViewList.get(atomViewList.size()-1);
 
         if (type.equals("HELIX")){
             MyLine3D helixView = new MyLine3D(
