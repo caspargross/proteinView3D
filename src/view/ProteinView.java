@@ -9,6 +9,7 @@ import javafx.scene.Group;
 import javafx.scene.control.SelectionModel;
 import javafx.scene.input.MouseButton;
 import javafx.scene.Node;
+import javafx.scene.shape.MeshView;
 import model.*;
 
 import java.util.ArrayList;
@@ -92,7 +93,12 @@ public class ProteinView extends Group {
                 createSecondaryStructureView(sS);
                 // Copy ProteinNodes into the selectionModel
                 initializeSelectionModel();
+
             }
+            // Create RibbonView
+            RibbonView newRibbonView = new RibbonView(this);
+            ribbonViewGroup.getChildren().addAll(newRibbonView.getChildren());
+            System.out.println("RIBBONVIEWGROUP ADDED");
 
         });
 
@@ -117,6 +123,10 @@ public class ProteinView extends Group {
 
         });
         showRibbonsProperty.addListener((observable, oldValue, newValue) -> {
+            for (int i = 0; i < ribbonViewGroup.getChildren().size(); i++) {
+                MeshView meshView = (MeshView) ribbonViewGroup.getChildren().get(i);
+                meshView.setVisible(newValue);
+            }
 
         });
 
@@ -150,8 +160,8 @@ public class ProteinView extends Group {
         getChildren().add(bondConnectionViewGroup);
         getChildren().add(bondViewGroup);
         getChildren().add(atomViewGroup);
-        getChildren().add(ribbonViewGroup);
         getChildren().add(secondaryStructureViewGroup);
+        getChildren().add(ribbonViewGroup);
 
         System.out.println("Created new ProteinView");
 
@@ -232,44 +242,3 @@ public class ProteinView extends Group {
     }
 
 }
-
-/**public void increaseAtomRadius(){
-
- for (int i = 0; i < atomViewGroup.getChildren().size(); i++) {
- AtomView atomView = (AtomView) atomViewGroup.getChildren().get(i);
- atomView.sphere.setRadius(atomView.sphere.getRadius()+atomView.RADIUS_FACTOR);
- }
- }
-
- public void decreaseAtomRadius(){
-
- for (int i = 0; i < atomViewGroup.getChildren().size(); i++) {
- AtomView atomView = (AtomView) atomViewGroup.getChildren().get(i);
- atomView.sphere.setRadius(atomView.sphere.getRadius()-atomView.RADIUS_FACTOR);
- }
- }
-
- public void increaseBondRadius(){
-
- for (int i = 0; i < bondViewGroup.getChildren().size(); i++) {
- BondView bondView = (BondView) bondViewGroup.getChildren().get(i);
- bondView.line.cylinder.setRadius(bondView.line.cylinder.getRadius()+bondView.RADIUS_FACTOR);
- }
- for (int i = 0; i < bondConnectionViewGroup.getChildren().size(); i++) {
- BondConnectionView  bondConnectionView = (BondConnectionView) bondConnectionViewGroup.getChildren().get(i);
- bondConnectionView.sphere.setRadius(bondConnectionView.sphere.getRadius()+bondConnectionView.RADIUS_FACTOR);
- }
- }
-
- public void decreaseBondRadius(){
-
- for (int i = 0; i < bondViewGroup.getChildren().size(); i++) {
- BondView bondView = (BondView) bondViewGroup.getChildren().get(i);
- bondView.line.cylinder.setRadius(Math.max(0.02,bondView.line.cylinder.getRadius()-bondView.RADIUS_FACTOR));
- }
- for (int i = 0; i < bondConnectionViewGroup.getChildren().size(); i++) {
- BondConnectionView  bondConnectionView = (BondConnectionView) bondConnectionViewGroup.getChildren().get(i);
- bondConnectionView.sphere.setRadius(Math.max(0.02,bondConnectionView.sphere.getRadius()-bondConnectionView.RADIUS_FACTOR));
- }
- }
- **/

@@ -30,7 +30,7 @@ public class PdbParser {
 
         // Add new Lines from the file
         readLines();
-        proteinGraph.pdbFullyRead.setValue(Boolean.TRUE);
+        //proteinGraph.pdbFullyRead.setValue(Boolean.TRUE);
         System.out.println("PDB Parser finshed");
 
     }
