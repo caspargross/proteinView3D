@@ -219,7 +219,7 @@ public class Controller {
 
         // Add Bar Chart
 
-        lEStatisticsPane.getChildren().addAll(mainView.barChart.getChildren());
+        lEStatisticsPane.getChildren().addAll(mainView.barChart);
 
         //lEBarChart = new BarChartData(new CategoryAxis(AminoAcidTools.AminoAcidType.values()), new NumberAxis());
 

@@ -30,7 +30,7 @@ public class MainView extends StackPane {
     // Model (ProteinGraph)
     public ProteinGraph model;
     public MySelectionModel<ProteinNode> selectionModel;
-    public MyBarChart barChart = new MyBarChart(model);
+    public MyBarChart barChart = new MyBarChart();
 
 
     // Content views and Scene

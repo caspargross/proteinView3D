@@ -158,7 +158,7 @@ public class Presenter{
         //view.headerLabel.setText(model.getHeader());
         System.out.println("Finished PDB Parser action");
         model.pdbFullyRead.setValue(true);
-        view.barChart.initialize();
+        view.barChart.initialize(model);
 
     }
 
