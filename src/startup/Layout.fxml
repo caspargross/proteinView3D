@@ -10,7 +10,7 @@
 <?import javafx.scene.paint.*?>
 <?import javafx.scene.text.*?>
 
-<VBox prefHeight="600.0" prefWidth="900.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="presenter.Controller">
+<VBox pickOnBounds="false" prefHeight="600.0" prefWidth="900.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="presenter.Controller">
   <children>
     <MenuBar VBox.vgrow="NEVER">
       <menus>
@@ -46,11 +46,11 @@
         </Menu>
       </menus>
     </MenuBar>
-    <SplitPane dividerPositions="0.20044543429844097, 0.799554565701559" focusTraversable="true" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
+    <SplitPane dividerPositions="0.20044543429844097, 0.799554565701559" focusTraversable="true" pickOnBounds="false" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
       <items>
         <Accordion minWidth="169.0" prefHeight="553.0" prefWidth="169.0" SplitPane.resizableWithParent="false">
           <expandedPane>
-            <TitledPane fx:id="x5" animated="false" text="View elements">
+            <TitledPane fx:id="x5" animated="false" text="View elements" pickOnBounds="false">
               <content>
                 <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                   <children>
@@ -80,11 +80,11 @@
             </TitledPane>
           </panes>
         </Accordion>
-        <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE">
+        <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" pickOnBounds="false">
           <tabs>
-            <Tab fx:id="lEProteinViewTab" text="Protein View">
+            <Tab fx:id="lEProteinViewTab" text="Protein View" >
               <content>
-                <AnchorPane id="lEProteinViewTab" fx:id="proteinViewPane" minHeight="0.0" minWidth="0.0" opacity="1.0" prefHeight="180.0" prefWidth="200.0" />
+                <AnchorPane id="lEProteinViewTab" fx:id="proteinViewPane" minHeight="0.0" minWidth="0.0" opacity="1.0" pickOnBounds="false" prefHeight="180.0" prefWidth="200.0" />
               </content>
             </Tab>
             <Tab id="lEBlastSearchTab" fx:id="lEBlastSearchTab" text="Blast Search">
@@ -120,7 +120,7 @@
               <content>
                 <AnchorPane id="statPane" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                   <children>
-                    <BarChart layoutX="0.0" layoutY="0.0" prefHeight="402.0" prefWidth="532.0" title="Amino acid properties">
+                    <BarChart fx:id="lEBarChart" layoutX="0.0" layoutY="0.0" prefHeight="402.0" prefWidth="532.0" title="Amino acid properties">
                       <xAxis>
                         <CategoryAxis side="BOTTOM" />
                       </xAxis>

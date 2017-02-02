@@ -70,10 +70,12 @@ public class MainView extends StackPane {
         // Setup TopPane and BottomPane
         topPane = new Pane();
         topPane.setPickOnBounds(false);
+        this.setPickOnBounds(false);
 
         bottomPane = new Pane();
+        bottomPane.setPickOnBounds(true);
         bottomPane.getChildren().add(viewScene);
-        bottomPane.setPickOnBounds(false);
+
 
         //viewPane = new StackPane(bottomPane, topPane);
         //viewPane.setStyle("-fx-background-color: rgba(0, 200, 200, 0); -fx-background-radius: 10;");
@@ -108,10 +110,6 @@ public class MainView extends StackPane {
 
     }
 
-    public void setMouseEvent() {
-
-
-    }
 
     private void setCamera() {
         // Set Camera settings for SubScene
@@ -129,8 +127,21 @@ public class MainView extends StackPane {
             while (c.next()) {
                 if (c.wasAdded()) {
                     c.getAddedSubList().forEach(node -> {
-                        BoundingBoxes2D bB2D = new BoundingBoxes2D(bottomPane, proteinView.findAtomViewFor(node), woldTransformProperty, viewScene);
+                        BoundingBoxes2D bB2D = new BoundingBoxes2D(bottomPane, proteinView.findAtomViewFor(node), woldTransformProperty, viewScene, selectionModel);
                         topPane.getChildren().add(bB2D);
+                    });
+                }
+
+                if (c.wasRemoved()) {
+                    c.getRemoved().forEach(node -> {
+                        /**for (int i = 0; i < topPane.getChildren().size(); i++) {
+                            BoundingBoxes2D bB = (BoundingBoxes2D) topPane.getChildren().get(i);
+                            if (bB.atomView.proteinNode.equals(c)) {
+                                topPane.getChildren().remove(bB);
+                                return;
+                            }
+                        }**/
+                        topPane.getChildren().remove(c.getFrom(), c.getTo() + c.getRemovedSize());
                     });
                 }
             }

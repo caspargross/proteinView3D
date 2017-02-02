@@ -14,7 +14,7 @@ import java.util.Arrays;
  */
 public class MySelectionModel<T> extends MultipleSelectionModel<T> {
 
-    private final ObservableSet<Integer> selectedIndices; // the set of selected indices
+    public final ObservableSet<Integer> selectedIndices; // the set of selected indices
 
     private T[] items; // need a copy of this array to map indices to objects, when required
 
@@ -169,4 +169,24 @@ public class MySelectionModel<T> extends MultipleSelectionModel<T> {
         clearSelection();
         this.items = Arrays.copyOf(items, items.length); // use copy for safety
     }
+
+    public void toggleSelect(T item){
+        for (int i = 0; i < items.length; i++) {
+            if (items[i].equals(item)) {
+                if (!isSelected(i)){
+                    select(i);
+                    System.out.println("Toggle node selection: ON");
+                }
+                else if (isSelected(i)){
+                    selectedIndices.remove(i);
+                    clearSelection(i);
+                    System.out.println("Toggle node selection: OFF");
+                }
+                return;
+            }
+        }
+
+    }
+
+
 }

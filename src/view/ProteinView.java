@@ -9,10 +9,7 @@ import javafx.scene.Group;
 import javafx.scene.control.SelectionModel;
 import javafx.scene.input.MouseButton;
 import javafx.scene.Node;
-import model.ProteinEdge;
-import model.ProteinGraph;
-import model.ProteinNode;
-import model.SecondaryStructure;
+import model.*;
 
 import java.util.ArrayList;
 
@@ -28,7 +25,7 @@ public class ProteinView extends Group {
     private Group bondConnectionViewGroup;
     private Group ribbonViewGroup;
     public Group secondaryStructureViewGroup;
-    public SelectionModel<ProteinNode> selectionModel;
+    public MySelectionModel<ProteinNode> selectionModel;
     public Property<String> atomInfo = new SimpleStringProperty("");
 
     ProteinGraph proteinGraph;
@@ -41,7 +38,7 @@ public class ProteinView extends Group {
     public DoubleProperty bondSizeProperty = new SimpleDoubleProperty(3);
 
 
-    public ProteinView(ProteinGraph proteinGraph, SelectionModel<ProteinNode>sM){
+    public ProteinView(ProteinGraph proteinGraph, MySelectionModel<ProteinNode>sM){
 
         this.selectionModel = sM;
         this.proteinGraph = proteinGraph;
@@ -94,15 +91,7 @@ public class ProteinView extends Group {
                 // Start adding the secondary Structure Views
                 createSecondaryStructureView(sS);
                 // Copy ProteinNodes into the selectionModel
-                ProteinNode[] proteinNodeArray = new ProteinNode[atomViewGroup.getChildren().size()];
-
-                for (int i = 0; i < atomViewGroup.getChildren().size(); i++) {
-                    AtomView atomView = (AtomView) atomViewGroup.getChildren();
-                    proteinNodeArray[i] = atomView.proteinNode;
-                }
-                selectionModel.setItems(proteinNodeArray);
-                System.out.println("Secondary structure View Created");
-                selectionModel.getItems();
+                initializeSelectionModel();
             }
 
         });
@@ -172,7 +161,7 @@ public class ProteinView extends Group {
     private void addMouseEvents(AtomView atomView){
         atomView.setOnMouseClicked(e -> {
             if (e.getButton().equals(MouseButton.PRIMARY)){
-                selectionModel.select(atomView.proteinNode);
+                selectionModel.toggleSelect(atomView.proteinNode);
             }
         });
 
@@ -187,6 +176,17 @@ public class ProteinView extends Group {
 
     }
 
+    private void initializeSelectionModel(){
+        ProteinNode[] proteinNodeArray = new ProteinNode[atomViewGroup.getChildren().size()];
+
+        for (int i = 0; i < atomViewGroup.getChildren().size(); i++) {
+            AtomView atomView = (AtomView) atomViewGroup.getChildren().get(i);
+            proteinNodeArray[i] = atomView.proteinNode;
+        }
+        selectionModel.setItems(proteinNodeArray);
+        System.out.println("Secondary structure View Created");
+        selectionModel.getItems();
+    }
     private void createAtomView(ProteinNode proteinNode){
 
         AtomView atomView = new AtomView(proteinNode);

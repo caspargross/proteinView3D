@@ -11,6 +11,7 @@ import javafx.scene.SubScene;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import model.MySelectionModel;
 import model.ProteinGraph;
 import model.ProteinNode;
 
@@ -21,8 +22,14 @@ public class BoundingBoxes2D extends Group{
 
 
     Group rectangleGroup = new Group();
+    AtomView atomView;
+    // Selection model needed because I am unable to Pick atoms through rectangles (PickOnBounds)
+    MySelectionModel<ProteinNode> selectionModel;
 
-    public BoundingBoxes2D(Pane pane, AtomView atomView, Property transformProperty, SubScene subScene) {
+
+    public BoundingBoxes2D(Pane pane, AtomView atomView, Property transformProperty, SubScene subScene, MySelectionModel<ProteinNode> mS) {
+        this.atomView = atomView;
+        this.selectionModel = mS;
 
         Property[] properties = new Property[]{
                 transformProperty,
@@ -110,9 +117,19 @@ public class BoundingBoxes2D extends Group{
             }
         });
 
+
+        rectangle.setPickOnBounds(false);
+        this.setPickOnBounds(false);
         getChildren().add(rectangle);
-        setPickOnBounds(false);
-        rectangle.setStroke(Color.FIREBRICK);
+
+        rectangle.setStroke(Color.ROYALBLUE);
+        rectangle.setStrokeWidth(2);
+        rectangle.setFill(Color.TRANSPARENT);
+
+        setOnMouseClicked(me ->{
+            System.out.println("Mouse clicked on sequence Row");
+            selectionModel.toggleSelect(atomView.proteinNode);
+        });
 
     }
 
