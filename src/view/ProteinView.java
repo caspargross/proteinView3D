@@ -6,6 +6,9 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ListChangeListener;
 import javafx.scene.Group;
+import javafx.scene.control.SelectionModel;
+import javafx.scene.input.MouseButton;
+import javafx.scene.Node;
 import model.ProteinEdge;
 import model.ProteinGraph;
 import model.ProteinNode;
@@ -25,6 +28,8 @@ public class ProteinView extends Group {
     private Group bondConnectionViewGroup;
     private Group ribbonViewGroup;
     public Group secondaryStructureViewGroup;
+    public SelectionModel<ProteinNode> selectionModel;
+    public Property<String> atomInfo = new SimpleStringProperty("");
 
     ProteinGraph proteinGraph;
 
@@ -36,8 +41,9 @@ public class ProteinView extends Group {
     public DoubleProperty bondSizeProperty = new SimpleDoubleProperty(3);
 
 
-    public ProteinView(ProteinGraph proteinGraph){
+    public ProteinView(ProteinGraph proteinGraph, SelectionModel<ProteinNode>sM){
 
+        this.selectionModel = sM;
         this.proteinGraph = proteinGraph;
         this.atomViewGroup = new Group();
         this.bondViewGroup = new Group();
@@ -46,7 +52,8 @@ public class ProteinView extends Group {
         this.secondaryStructureViewGroup = new Group();
 
 
-        // Add changelistener for proteinGraph Nodes (Atoms)
+
+        // Add changelistener for model Nodes (Atoms)
         proteinGraph.nodeList.addListener((ListChangeListener<ProteinNode>) c -> {
            while (c.next()){
                if (c.wasAdded()){
@@ -64,26 +71,8 @@ public class ProteinView extends Group {
            }
         });
 
-        // Add listener for atom selection
-        proteinGraph.nodeListSelected.addListener((ListChangeListener<ProteinNode>) c -> {
-            while (c.next()){
-                if (c.wasAdded()){
-                    for (ProteinNode proteinNode:c.getAddedSubList()){
-                        System.err.println("Node was selected");
-                        findAtomViewFor(proteinNode).sphere.setRadius(10);
-                    }
-                }
 
-                if (c.wasRemoved()){
-                    for (ProteinNode proteinNode:c.getRemoved()){
-                        System.err.println("Node was removed");
-                        findAtomViewFor(proteinNode).sphere.setRadius(1);
-                    }
-                }
-            }
-        });
-
-        // Add changeListener for proteinGraph Edge (Bonds)
+        // Add changeListener for model Edge (Bonds)
         proteinGraph.edgeList.addListener((ListChangeListener<ProteinEdge>) c -> {
             while (c.next()) {
                 if (c.wasAdded()) {
@@ -102,8 +91,18 @@ public class ProteinView extends Group {
         // Add changeListener for secondaryStructure elements in Model
         proteinGraph.pdbFullyRead.addListener((observable, oldValue, newValue) -> {
             for (SecondaryStructure sS:proteinGraph.secondaryStructureList) {
+                // Start adding the secondary Structure Views
                 createSecondaryStructureView(sS);
+                // Copy ProteinNodes into the selectionModel
+                ProteinNode[] proteinNodeArray = new ProteinNode[atomViewGroup.getChildren().size()];
+
+                for (int i = 0; i < atomViewGroup.getChildren().size(); i++) {
+                    AtomView atomView = (AtomView) atomViewGroup.getChildren();
+                    proteinNodeArray[i] = atomView.proteinNode;
+                }
+                selectionModel.setItems(proteinNodeArray);
                 System.out.println("Secondary structure View Created");
+                selectionModel.getItems();
             }
 
         });
@@ -170,9 +169,28 @@ public class ProteinView extends Group {
 
     }
 
+    private void addMouseEvents(AtomView atomView){
+        atomView.setOnMouseClicked(e -> {
+            if (e.getButton().equals(MouseButton.PRIMARY)){
+                selectionModel.select(atomView.proteinNode);
+            }
+        });
+
+        atomView.setOnMouseEntered(e -> {
+            atomInfo.setValue(atomView.proteinNode.getResSeq()+ " " +
+                    atomView.proteinNode.getName() + " " + atomView.proteinNode.getResName());
+        });
+
+        atomView.setOnMouseExited(e -> {
+            atomInfo.setValue("");
+        });
+
+    }
+
     private void createAtomView(ProteinNode proteinNode){
 
         AtomView atomView = new AtomView(proteinNode);
+        addMouseEvents(atomView);
         atomViewGroup.getChildren().add(atomView);
         System.out.println("Atom View to AtomViewGroup" + atomViewGroup.getChildren().size());
 

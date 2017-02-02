@@ -10,8 +10,10 @@ import javafx.scene.transform.Scale;
 import javafx.scene.transform.Translate;
 import javafx.stage.FileChooser;
 import javafx.scene.Node;
+import model.MySelectionModel;
 import model.PdbParser;
 import model.ProteinGraph;
+import model.ProteinNode;
 import view.AtomView;
 import view.MainView;
 
@@ -37,15 +39,20 @@ public class Presenter{
     MainView view;
     ProteinGraph model;
 
+
     public Presenter (MainView mainView, ProteinGraph proteinGraph) {
 
         this.view = mainView;
         this.model = proteinGraph;
 
+
         setupRotateAndMove();
         setupZoom();
         setupMouseHover();
         updatePivotPoint();
+        //setupSelectionModelEvents();
+
+
     }
 
     public void setupRotateAndMove() {
@@ -122,45 +129,18 @@ public class Presenter{
         pivotZ = view.proteinView.getBoundsInParent().getMaxZ()-view.proteinView.getBoundsInParent().getDepth()/2;
     }
 
-
-
-
-    // Button events in Main View
-    private void createButtonEvents(){
-        // Open File
-        /**
-        view.openFile.setOnAction(e ->{
-            readPDB();
+    /**public void setupSelectionModelEvents(){
+        view.sequenceView.setOnMouseClicked(e -> {
+            if (e.getButton().equals(MouseButton.PRIMARY)){
+                System.out.println("selected " + );
+                view.selectionModel.select();
+            }
         });
 
-        // Increase and Decrease Bond and Atom radius
-        view.increaseAtomSize.setOnAction(e -> view.getProteinView().increaseAtomRadius());
-        view.decreaseAtomSize.setOnAction(e -> view.getProteinView().decreaseAtomRadius());
-        view.increaseBondSize.setOnAction(e -> view.getProteinView().increaseBondRadius());
-        view.decreaseBondSize.setOnAction(e -> view.getProteinView().decreaseBondRadius());
-
-        // Setup Button bindings
-        view.showAtoms.selectedProperty().addListener((observable, oldValue, newValue) -> {
-            model.showAtoms(newValue);
-        });
-
-        view.showBonds.selectedProperty().addListener(((observable, oldValue, newValue) -> {
-            model.showBonds(newValue);
-        }));
-
-
-        // Set initial view selections
-        view.showAtoms.selectedProperty().set(true);
-        view.showBonds.selectedProperty().set(true);
-        view.showBackbone.selectedProperty().setValue(true);
-        view.showResidues.selectedProperty().setValue(true);
-        *
-        //view.showBonds.setOnAction(e -> view.getProteinView().showBonds(view.showBonds.selectedProperty().get()));
-
-        **/
-        //view.showAtoms.setOnAction(e -> view.getProteinView().showAtoms(view.showAtoms.selectedProperty().get()));
 
     }
+     **/
+
 
     public void readPDB() {
 
@@ -174,7 +154,7 @@ public class Presenter{
         model = pdbParser.getProteinGraph();
         model.assignBonds();
 
-        view.setInitialTransform();
+        //view.setInitialTransform();
         //view.headerLabel.setText(model.getHeader());
         System.out.println("Finished PDB Parser action");
 

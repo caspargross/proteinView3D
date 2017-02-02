@@ -4,6 +4,7 @@ import com.sun.javafx.geom.transform.Affine3D;
 import com.sun.javafx.geom.transform.BaseTransform;
 import javafx.beans.property.Property;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.collections.ListChangeListener;
 import javafx.geometry.Pos;
 import javafx.scene.Camera;
 import javafx.scene.PerspectiveCamera;
@@ -11,8 +12,11 @@ import javafx.scene.SceneAntialiasing;
 import javafx.scene.SubScene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
+import javafx.scene.Node;
 import javafx.scene.transform.Transform;
+import model.MySelectionModel;
 import model.ProteinGraph;
+import model.ProteinNode;
 
 
 /**
@@ -24,6 +28,8 @@ public class MainView extends StackPane {
 
     // Model (ProteinGraph)
     public ProteinGraph model;
+    public MySelectionModel<ProteinNode> selectionModel;
+
 
     // Content views and Scene
     public SubScene viewScene;
@@ -39,7 +45,9 @@ public class MainView extends StackPane {
     public Property<Transform> woldTransformProperty;
 
     public MainView(ProteinGraph proteinGraph) {
+
         this.model = proteinGraph;
+        this.selectionModel = new MySelectionModel<>();
 
         // Setup Main Pane
         AnchorPane.setBottomAnchor(this, 0.0);
@@ -49,13 +57,14 @@ public class MainView extends StackPane {
         this.setStyle("-fx-background-color : White");
 
         // Create new views
-        proteinView = new ProteinView(model);
-        sequenceView = new SequenceView(proteinView);
+        this.proteinView = new ProteinView(model, selectionModel);
+        this.sequenceView = new SequenceView(proteinView, selectionModel);
 
         // Setup viewScenes with ProteinView
         viewScene = new SubScene(proteinView, this.getWidth(), this.getHeight(), true, SceneAntialiasing.BALANCED);
         viewScene.widthProperty().bind(this.widthProperty());
         viewScene.heightProperty().bind(this.heightProperty());
+        viewScene.setPickOnBounds(false);
 
 
         // Setup TopPane and BottomPane
@@ -94,10 +103,12 @@ public class MainView extends StackPane {
             proteinView.getTransforms().setAll(newValue);
         });
 
+        setupBoundingBoxes();
+
 
     }
 
-    public void setInitialTransform() {
+    public void setMouseEvent() {
 
 
     }
@@ -109,4 +120,19 @@ public class MainView extends StackPane {
         camera.setTranslateZ(-1000);
         viewScene.setCamera(camera);
     }
-}
+
+
+
+    private void setupBoundingBoxes(){
+
+       selectionModel.getSelectedItems().addListener((ListChangeListener<ProteinNode>) c -> {
+            while (c.next()) {
+                if (c.wasAdded()) {
+                    c.getAddedSubList().forEach(node -> {
+                        BoundingBoxes2D bB2D = new BoundingBoxes2D(bottomPane, proteinView.findAtomViewFor(node), woldTransformProperty, viewScene);
+                        topPane.getChildren().add(bB2D);
+                    });
+                }
+            }
+        });
+}   }

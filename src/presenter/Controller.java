@@ -188,7 +188,7 @@ public class Controller {
 
         // Initialize elements in status bar
         lEleftLabel.textProperty().bind(model.header);
-        lErightLabel.textProperty().bind(presenter.hoverInfo);
+        lErightLabel.textProperty().bind(mainView.proteinView.atomInfo);
 
 
         scrollPane.setContent(mainView.sequenceView);

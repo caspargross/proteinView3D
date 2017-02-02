@@ -7,7 +7,9 @@ import javafx.geometry.Bounds;
 import javafx.geometry.NodeOrientation;
 import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.SubScene;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import model.ProteinGraph;
 import model.ProteinNode;
@@ -17,57 +19,115 @@ import model.ProteinNode;
  */
 public class BoundingBoxes2D extends Group{
 
-    Property[] properties;
+
     Group rectangleGroup = new Group();
 
-    public BoundingBoxes2D(ProteinView proteinView, MainView view) {
+    public BoundingBoxes2D(Pane pane, AtomView atomView, Property transformProperty, SubScene subScene) {
 
-        proteinView.atomViewGroup.getChildren().addListener((ListChangeListener<Node>) c->{
+        Property[] properties = new Property[]{
+                transformProperty,
+                atomView.translateXProperty(), atomView.translateYProperty(), atomView.translateZProperty(),
+                atomView.scaleXProperty(), atomView.scaleYProperty(), atomView.scaleZProperty(),
+                subScene.widthProperty(), subScene.heightProperty(), atomView.sphere.radiusProperty()};
 
-            while (c.next()){
-                if (c.wasAdded()) {
-                    for (int i = 0; i < c.getAddedSize(); i++) {
+        ObjectBinding<Rectangle> binding = createBoundingBoxBinding(pane, atomView, properties);
+        Rectangle rectangle = new Rectangle();
 
-                        Node node = c.getAddedSubList().get(i);
-                        Rectangle rect = new Rectangle();
-                        properties = new Property[] {view.woldTransformProperty, node.translateXProperty(),
-                                node.translateYProperty(), node.scaleXProperty(), node.scaleYProperty()};
-                        final ObjectBinding<Rectangle> binding = createBoundingBoxBinding(view.topPane, node, properties);
+        rectangle.xProperty().bind(new DoubleBinding() {
+            {
+                bind(binding);
+            }
 
-                        // Bind Translate Properties
-                        rect.xProperty().bind(new DoubleBinding() {
-                            {
-                                bind(binding);
-                            }
-                            @Override
-                            protected double computeValue() {
-                                return binding.get().getX();
-                            }
-                        });
-
-                        rect.yProperty().bind(new DoubleBinding() {
-                            {
-                                bind(binding);
-                            }
-                            @Override
-                            protected double computeValue() {
-                                return binding.get().getY();
-                            }
-                        });
-                        rectangleGroup.getChildren().add(rect);
-
-
-                    }
-                }
+            @Override
+            protected double computeValue() {
+                return binding.get().getX();
             }
         });
+
+        rectangle.yProperty().bind(new DoubleBinding() {
+            {
+                bind(binding);
+            }
+
+            @Override
+            protected double computeValue() {
+                return binding.get().getY();
+            }
+        });
+
+        rectangle.scaleXProperty().bind(new DoubleBinding() {
+            {
+                bind(binding);
+            }
+
+            @Override
+            protected double computeValue() {
+                return binding.get().getScaleX();
+            }
+        });
+
+        rectangle.scaleYProperty().bind(new DoubleBinding() {
+            {
+                bind(binding);
+            }
+
+            @Override
+            protected double computeValue() {
+                return binding.get().getScaleY();
+            }
+        });
+
+        rectangle.scaleZProperty().bind(new DoubleBinding() {
+            {
+                bind(binding);
+            }
+
+            @Override
+            protected double computeValue() {
+                return binding.get().getScaleZ();
+            }
+        });
+
+        rectangle.heightProperty().bind(new DoubleBinding() {
+            {
+                bind(binding);
+            }
+
+            @Override
+            protected double computeValue() {
+                return binding.get().getHeight();
+            }
+        });
+
+        rectangle.widthProperty().bind(new DoubleBinding() {
+            {
+                bind(binding);
+            }
+
+            @Override
+            protected double computeValue() {
+                return binding.get().getWidth();
+            }
+        });
+
+        getChildren().add(rectangle);
+        setPickOnBounds(false);
+        rectangle.setStroke(Color.FIREBRICK);
+
     }
 
 
 
     public ObjectBinding<Rectangle> createBoundingBoxBinding(Pane pane, Node node, Property[] properties) {
 
+
         final ObjectBinding<Rectangle> binding = new  ObjectBinding<Rectangle>(){
+
+            {
+                for (int i = 0; i < properties.length; i++) {
+                    super.bind(properties[i]);
+                }
+            }
             @Override
             protected Rectangle computeValue() {
                 final Bounds boundsOnScreen = node.localToScreen(node.getBoundsInLocal());
@@ -80,15 +140,5 @@ public class BoundingBoxes2D extends Group{
 
         return binding;
     }
-
-
-
-    /**public void addBox(ProteinView nodeView){
-        System.out.println("Box added");
-        Rectangle rect = new Rectangle(nodeView.getTranslateX()-1, nodeView.getTranslateY()-1, nodeView.getScaleX()+2, nodeView.getScaleY()+2);
-        rectangleGroup.getChildren().add(rect);
-
-    }
-     **/
 
 }

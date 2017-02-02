@@ -98,6 +98,7 @@ public class MySelectionModel<T> extends MultipleSelectionModel<T> {
         for (int i = 0; i < items.length; i++) {
             if (items[i].equals(item)) {
                 select(i);
+                System.out.println("Added Node to selection Model");
                 return;
             }
         }
