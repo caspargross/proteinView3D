@@ -10,6 +10,7 @@ import java.util.ResourceBundle;
 
 import blast.BlastService;
 import blast.RemoteBlastClient;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.chart.BarChart;
@@ -18,8 +19,8 @@ import javafx.scene.chart.NumberAxis;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import model.AminoAcidTools;
+import model.MyBarChart;
 import model.ProteinGraph;
-import model.BarChartData;
 import view.MainView;
 
 
@@ -99,6 +100,9 @@ public class Controller {
     private MenuItem menuOpen;
 
     @FXML
+    private MenuItem menuQuit;
+
+    @FXML
     private AnchorPane proteinViewPane;
 
     @FXML
@@ -119,7 +123,7 @@ public class Controller {
 
     // Bar Chart
     @FXML
-    private BarChart lEBarChart;
+    private AnchorPane lEStatisticsPane;
 
     /**
      * Events to the corresponding buttons
@@ -129,6 +133,12 @@ public class Controller {
     void menuOpenEvent(ActionEvent event) {
         presenter.readPDB();
         System.out.println("Open File Button pressed");
+    }
+
+    @FXML
+    void menuQuitEvent(ActionEvent event) {
+        Platform.exit();
+        System.exit(0);
     }
 
 
@@ -208,7 +218,9 @@ public class Controller {
         lEbondSize.valueProperty().bindBidirectional(mainView.proteinView.bondSizeProperty);
 
         // Add Bar Chart
-        BarChartData barChartData = new BarChartData(model);
+
+        lEStatisticsPane.getChildren().addAll(mainView.barChart.getChildren());
+
         //lEBarChart = new BarChartData(new CategoryAxis(AminoAcidTools.AminoAcidType.values()), new NumberAxis());
 
         }

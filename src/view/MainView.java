@@ -14,6 +14,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.scene.Node;
 import javafx.scene.transform.Transform;
+import model.MyBarChart;
 import model.MySelectionModel;
 import model.ProteinGraph;
 import model.ProteinNode;
@@ -29,6 +30,7 @@ public class MainView extends StackPane {
     // Model (ProteinGraph)
     public ProteinGraph model;
     public MySelectionModel<ProteinNode> selectionModel;
+    public MyBarChart barChart = new MyBarChart(model);
 
 
     // Content views and Scene
@@ -87,6 +89,9 @@ public class MainView extends StackPane {
         setCamera();
         //getChildren().add(viewPane);
 
+        // Add BarChart
+
+
         // Add WorldTransform
         woldTransformProperty = new SimpleObjectProperty<>(new Transform() {
             @Override
@@ -134,14 +139,7 @@ public class MainView extends StackPane {
 
                 if (c.wasRemoved()) {
                     c.getRemoved().forEach(node -> {
-                        /**for (int i = 0; i < topPane.getChildren().size(); i++) {
-                            BoundingBoxes2D bB = (BoundingBoxes2D) topPane.getChildren().get(i);
-                            if (bB.atomView.proteinNode.equals(c)) {
-                                topPane.getChildren().remove(bB);
-                                return;
-                            }
-                        }**/
-                        topPane.getChildren().remove(c.getFrom(), c.getTo() + c.getRemovedSize());
+                       topPane.getChildren().remove(c.getFrom(), c.getTo() + c.getRemovedSize());
                     });
                 }
             }

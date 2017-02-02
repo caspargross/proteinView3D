@@ -5,7 +5,6 @@ package model;
  */
 public final class AminoAcidTools {
 
-    public enum AminoAcidType {Basic, Acidic, Polar, Special, Hydrophobic}
 
     public static String transFormCode(String threeLetterCode){
 
@@ -35,28 +34,28 @@ public final class AminoAcidTools {
         return "";
     }
 
-    public static AminoAcidType getAminoAcidType(String threeLetterCode){
+    public static String getAminoAcidType(String threeLetterCode){
         switch (threeLetterCode) {
-            case "ALA" : return AminoAcidType.Hydrophobic;
-            case "CYS" : return AminoAcidType.Special;
-            case "ASP" : return AminoAcidType.Acidic;
-            case "GLU" : return AminoAcidType.Acidic;
-            case "PHE" : return AminoAcidType.Hydrophobic;
-            case "GLY" : return AminoAcidType.Special;
-            case "HIS" : return AminoAcidType.Basic;
-            case "ILE" : return AminoAcidType.Hydrophobic;
-            case "LYS" : return AminoAcidType.Basic;
-            case "LEU" : return AminoAcidType.Hydrophobic;
-            case "MET" : return AminoAcidType.Hydrophobic;
-            case "ASN" : return AminoAcidType.Polar;
-            case "PRO" : return AminoAcidType.Special;
-            case "GLN" : return AminoAcidType.Polar;
-            case "ARG" : return AminoAcidType.Basic;
-            case "SER" : return AminoAcidType.Polar;
-            case "THR" : return AminoAcidType.Hydrophobic;
-            case "VAL" : return AminoAcidType.Hydrophobic;
-            case "TRP" : return AminoAcidType.Hydrophobic;
-            case "TYR" : return AminoAcidType.Hydrophobic;
+            case "A" : return "Hydrophobic";
+            case "C" : return "Special";
+            case "D" : return "Acidic";
+            case "E" : return "Acidic";
+            case "F" : return "Hydrophobic";
+            case "G" : return "Special";
+            case "H" : return "Basic";
+            case "I" : return "Hydrophobic";
+            case "K" : return "Basic";
+            case "L" : return "Hydrophobic";
+            case "M" : return "Hydrophobic";
+            case "N" : return "Polarl";
+            case "P" : return "Special";
+            case "Q" : return "Polarl";
+            case "R" : return "Basic";
+            case "S" : return "Polarl";
+            case "T" : return "Hydrophobic";
+            case "V" : return "Hydrophobic";
+            case "W" : return "Hydrophobic";
+            case "Y" : return "Hydrophobic";
 
         }
         return null;

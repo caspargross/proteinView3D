@@ -17,28 +17,11 @@
         <Menu mnemonicParsing="false" text="File">
           <items>
             <MenuItem mnemonicParsing="false" onAction="#menuOpenEvent" text="Open…" fx:id="menuOpen" />
-            <MenuItem mnemonicParsing="false" text="Quit" />
+            <MenuItem mnemonicParsing="false" onAction="#menuQuitEvent" text="Quit" fx:id="menuQuit"  />
           </items>
         </Menu>
-        <Menu mnemonicParsing="false" text="Edit">
-          <items>
-            <MenuItem mnemonicParsing="false" text="Undo" />
-            <MenuItem mnemonicParsing="false" text="Redo" />
-            <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem mnemonicParsing="false" text="Cut" />
-            <MenuItem mnemonicParsing="false" text="Copy" />
-            <MenuItem mnemonicParsing="false" text="Paste" />
-            <MenuItem mnemonicParsing="false" text="Delete" />
-            <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem mnemonicParsing="false" text="Select All" />
-            <MenuItem mnemonicParsing="false" text="Unselect All" />
-          </items>
-        </Menu>
-        <Menu mnemonicParsing="false" text="View">
-          <items>
-            <MenuItem mnemonicParsing="false" text="Action 1" />
-          </items>
-        </Menu>
+        <Menu mnemonicParsing="false" text="Edit" />
+        <Menu mnemonicParsing="false" text="View" />
         <Menu mnemonicParsing="false" text="Help">
           <items>
             <MenuItem mnemonicParsing="false" text="About MyHelloApp" />
@@ -50,7 +33,7 @@
       <items>
         <Accordion minWidth="169.0" prefHeight="553.0" prefWidth="169.0" SplitPane.resizableWithParent="false">
           <expandedPane>
-            <TitledPane fx:id="x5" animated="false" text="View elements" pickOnBounds="false">
+            <TitledPane fx:id="x5" animated="false" pickOnBounds="false" text="View elements">
               <content>
                 <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                   <children>
@@ -80,9 +63,9 @@
             </TitledPane>
           </panes>
         </Accordion>
-        <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" pickOnBounds="false">
+        <TabPane pickOnBounds="false" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE">
           <tabs>
-            <Tab fx:id="lEProteinViewTab" text="Protein View" >
+            <Tab fx:id="lEProteinViewTab" text="Protein View">
               <content>
                 <AnchorPane id="lEProteinViewTab" fx:id="proteinViewPane" minHeight="0.0" minWidth="0.0" opacity="1.0" pickOnBounds="false" prefHeight="180.0" prefWidth="200.0" />
               </content>
@@ -118,18 +101,7 @@
             </Tab>
             <Tab id="lEStatisticsTab" fx:id="lEStatisticsTab" text="Statistics">
               <content>
-                <AnchorPane id="statPane" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                  <children>
-                    <BarChart fx:id="lEBarChart" layoutX="0.0" layoutY="0.0" prefHeight="402.0" prefWidth="532.0" title="Amino acid properties">
-                      <xAxis>
-                        <CategoryAxis side="BOTTOM" />
-                      </xAxis>
-                      <yAxis>
-                        <NumberAxis side="LEFT" />
-                      </yAxis>
-                    </BarChart>
-                  </children>
-                </AnchorPane>
+                <AnchorPane id="statPane" fx:id="lEStatisticsPane" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
               </content>
             </Tab>
           </tabs>
@@ -159,11 +131,7 @@
             <Font size="11.0" fx:id="x3" />
           </font>
         </Label>
-        <Pane prefHeight="-1.0" prefWidth="-1.0" HBox.hgrow="ALWAYS">
-          <children>
-            <ProgressBar id="lEProgressBar" layoutX="288.0" layoutY="3.0" prefWidth="200.0" progress="0.0" />
-          </children>
-        </Pane>
+        <Pane prefHeight="-1.0" prefWidth="-1.0" HBox.hgrow="ALWAYS" />
         <Label id="lErightStatus" fx:id="lErightLabel" font="$x3" maxWidth="-1.0" text="Right status" HBox.hgrow="NEVER">
           <textFill>
             <Color blue="0.625" green="0.625" red="0.625" fx:id="x4" />

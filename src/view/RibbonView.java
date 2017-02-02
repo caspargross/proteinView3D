@@ -94,7 +94,7 @@ public class RibbonView extends Group {
             mesh.getPoints().addAll(points);
             mesh.getFaces().addAll(faces);
             mesh.getTexCoords().addAll(texArray);
-            //mesh.getFaceSmoothingGroups().addAll(smoothing);
+            mesh.getFaceSmoothingGroups().addAll(smoothing);
 
             MeshView meshView = new MeshView(mesh);
             meshView.setDrawMode(DrawMode.FILL);
