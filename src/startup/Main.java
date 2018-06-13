@@ -4,12 +4,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import model.ProteinGraph;
-import presenter.Presenter;
-import view.MainView;
 
 // Layout: Classic MVP
 public class Main extends Application {
@@ -20,7 +15,6 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("Layout.fxml"));
         Parent root = loader.load();

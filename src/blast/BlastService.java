@@ -17,7 +17,6 @@ import javax.swing.plaf.basic.BasicTreeUI;
 public class BlastService extends Service<String>{
 
 
-
     private String querySequence;
     private String dataBase;
     private RemoteBlastClient.BlastProgram blastProgram;

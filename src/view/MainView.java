@@ -117,6 +117,7 @@ public class MainView extends StackPane {
 
 
     private void setCamera() {
+
         // Set Camera settings for SubScene
         Camera camera = new PerspectiveCamera(true);
         camera.setFarClip(50000);

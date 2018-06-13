@@ -16,7 +16,6 @@ public class AtomView extends Group{
     final double RADIUS_FACTOR = 0.18;
 
 
-
     ProteinNode proteinNode;
     Sphere sphere;
 
@@ -38,6 +37,10 @@ public class AtomView extends Group{
         if (proteinNode.getElement().equals("N")) pm.setDiffuseColor(Color.DARKGREEN);
         pm.setSpecularColor(Color.WHITE);
         sphere.setMaterial(pm);
+    }
+
+    private void setColor(String type){
+
     }
 
     private void moveGroup(){
